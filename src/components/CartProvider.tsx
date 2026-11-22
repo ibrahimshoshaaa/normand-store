@@ -128,7 +128,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem = useCallback(
     (item: Omit<BagItem, "quantity">, quantity = 1) => {
       commitItem(item, quantity);
-      showToast(`✓ ${item.name} added to your bag`);
+      showToast('✓ Added to your bag');
     },
     [commitItem, showToast],
   );
@@ -142,7 +142,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     ) => {
       const commit = () => {
         commitItem(item, quantity);
-        if (!opts?.silent) showToast(`✓ ${item.name} added to your bag`);
+        if (!opts?.silent) showToast('✓ Added to your bag');
       };
       const reduced =
         typeof window !== "undefined" &&

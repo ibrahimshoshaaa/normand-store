@@ -22,13 +22,16 @@ export function BagDrawer() {
       />
       <aside
         aria-label="Your bag"
-        className={`drawer fixed right-0 top-0 z-50 flex h-full w-[min(420px,100%)] flex-col bg-surface shadow-2xl ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+        className={`drawer fixed bottom-3 right-3 top-3 z-50 flex w-[min(430px,calc(100%-3rem))] flex-col overflow-hidden rounded-[24px] bg-surface shadow-2xl ${
+          isOpen ? "translate-x-0" : "translate-x-[calc(100%+1rem)]"
         }`}
       >
-        <div className="flex items-center justify-between border-b border-black/10 px-5 py-4">
+        <div className="flex items-center justify-between px-5 py-4">
           <h2 className="font-display text-xl font-bold">
-            Your bag {items.length > 0 && `(${items.reduce((s, i) => s + i.quantity, 0)})`}
+            Your bag{" "}
+            {items.length > 0 && (
+              <span className="text-ink-soft">({items.reduce((s, i) => s + i.quantity, 0)})</span>
+            )}
           </h2>
           <button
             type="button"
@@ -40,16 +43,18 @@ export function BagDrawer() {
           </button>
         </div>
 
-        <div className="border-b border-black/10 px-5 py-3">
-          {remaining > 0 ? (
-            <p className="text-sm">
-              You’re <strong>{formatMoney(remaining)}</strong> away from free delivery
-            </p>
-          ) : (
-            <p className="text-sm font-semibold text-leaf">Free delivery unlocked</p>
-          )}
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-cream">
-            <div className="h-full rounded-full bg-ink transition-all duration-500" style={{ width: `${progress}%` }} />
+        <div className="px-5 pb-1">
+          <div className="rounded-2xl bg-cream px-4 py-3">
+            {remaining > 0 ? (
+              <p className="text-sm">
+                You’re <strong>{formatMoney(remaining)}</strong> away from free delivery
+              </p>
+            ) : (
+              <p className="text-sm font-semibold text-leaf">Free delivery unlocked</p>
+            )}
+            <div className="mt-2 h-2 overflow-hidden rounded-full bg-white">
+              <div className="h-full rounded-full bg-ink transition-all duration-500" style={{ width: `${progress}%` }} />
+            </div>
           </div>
         </div>
 
@@ -67,9 +72,9 @@ export function BagDrawer() {
               </Link>
             </div>
           ) : (
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               {items.map((item) => (
-                <li key={`${item.slug}-${item.colour}-${item.size}`} className="flex gap-3">
+                <li key={`${item.slug}-${item.colour}-${item.size}`} className="flex gap-3 rounded-2xl bg-cream p-3">
                   <ProductImage
                     garment={item.garment}
                     imageUrl={item.imageUrl}
@@ -117,7 +122,7 @@ export function BagDrawer() {
                           +
                         </button>
                       </div>
-                      <p className="font-display font-bold">{formatMoney(item.priceCents * item.quantity)}</p>
+                      <p className="whitespace-nowrap font-display font-bold">{formatMoney(item.priceCents * item.quantity)}</p>
                     </div>
                   </div>
                 </li>

@@ -92,24 +92,26 @@ h3,
   animation: spin-slow 22s linear infinite;
 }
 
-/* Toast slide-up */
+/* Toast slide-up — only the vertical part: the element is already centred
+   with -translate-x-1/2, so the keyframes must not shift X again (that
+   pushed the pill a full width to the left). */
 @keyframes toast-in {
   from {
     opacity: 0;
-    transform: translate(-50%, 16px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
-    transform: translate(-50%, 0);
+    transform: translateY(0);
   }
 }
 .toast-in {
   animation: toast-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-/* Bag drawer */
+/* Bag drawer — like the demo, it slides in as a floating panel in ~0.3s. */
 .drawer {
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .drawer-backdrop {
   transition: opacity 0.3s ease;
