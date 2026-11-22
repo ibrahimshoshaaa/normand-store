@@ -17,7 +17,7 @@ export function Stars({ rating }: { rating: number }) {
 }
 
 export function QuickAddButton({ product }: { product: ProductView }) {
-  const { addItem, openBag } = useCart();
+  const { flyAdd } = useCart();
   return (
     <button
       type="button"
@@ -25,21 +25,54 @@ export function QuickAddButton({ product }: { product: ProductView }) {
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        addItem({
-          slug: product.slug,
-          name: product.name,
-          priceCents: product.priceCents,
-          colour: product.colours[0]?.name ?? "",
-          size: "M",
-          garment: product.garment,
-          imageUrl: product.imageUrl,
-          tint: product.tint,
-        });
-        openBag();
+        flyAdd(
+          {
+            slug: product.slug,
+            name: product.name,
+            priceCents: product.priceCents,
+            colour: product.colours[0]?.name ?? "",
+            size: "M",
+            garment: product.garment,
+            imageUrl: product.imageUrl,
+            tint: product.tint,
+          },
+          1,
+          e.currentTarget.getBoundingClientRect(),
+        );
       }}
       className="flex h-10 w-10 items-center justify-center rounded-full bg-ink text-cream shadow-lg transition hover:scale-105"
     >
       <span className="text-xl leading-none">+</span>
+    </button>
+  );
+}
+
+/** Pill "Add to bag" button for the home hero coat tile — same fly-to-bag flow. */
+export function HeroAddButton({ product }: { product: ProductView }) {
+  const { flyAdd } = useCart();
+  return (
+    <button
+      type="button"
+      onClick={(e) => {
+        e.preventDefault();
+        flyAdd(
+          {
+            slug: product.slug,
+            name: product.name,
+            priceCents: product.priceCents,
+            colour: product.colours[0]?.name ?? "",
+            size: "M",
+            garment: product.garment,
+            imageUrl: product.imageUrl,
+            tint: product.tint,
+          },
+          1,
+          e.currentTarget.getBoundingClientRect(),
+        );
+      }}
+      className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-cream transition hover:opacity-90"
+    >
+      Add to bag
     </button>
   );
 }
@@ -60,7 +93,7 @@ export function ProductCard({ product }: { product: ProductView }) {
           imageUrl={product.imageUrl}
           bg={product.tint}
           label={product.name}
-          className="aspect-square w-full transition duration-500 group-hover:scale-[1.04]"
+          className="idle-drift aspect-square w-full transition duration-500 group-hover:scale-[1.04]"
         />
         {product.badge && (
           <span className="absolute left-3 top-3 rounded-full bg-ink px-3 py-1 text-xs font-semibold text-cream">

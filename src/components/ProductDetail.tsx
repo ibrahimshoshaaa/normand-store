@@ -1,7 +1,8 @@
 "use client";
 
 // Normand — product detail interactions: colour/size swatches, quantity,
-// add to bag (with a small fly-to-bag dot for delight).
+// add to bag (fly-to-bag thumbnail; the button itself shows "✓ Added"
+// for a second instead of a toast, and the drawer stays closed).
 import { useState } from "react";
 import { useCart } from "./CartProvider";
 import { formatMoney } from "@/lib/format";
@@ -10,7 +11,7 @@ import { ProductImage } from "./ProductImage";
 import type { ProductView } from "@/lib/store";
 
 export function ProductDetail({ product }: { product: ProductView }) {
-  const { addItem, openBag } = useCart();
+  const { flyAdd } = useCart();
   const [colour, setColour] = useState(product.colours[0]?.name ?? "");
   const [size, setSize] = useState("M");
   const [qty, setQty] = useState(1);
@@ -104,24 +105,28 @@ export function ProductDetail({ product }: { product: ProductView }) {
           </div>
           <button
             type="button"
-            onClick={() => {
-              addItem({
-                slug: product.slug,
-                name: product.name,
-                priceCents: product.priceCents,
-                colour,
-                size,
-                garment: product.garment,
-                imageUrl: product.imageUrl,
-                tint: product.tint,
-              }, qty);
+            onClick={(e) => {
+              flyAdd(
+                {
+                  slug: product.slug,
+                  name: product.name,
+                  priceCents: product.priceCents,
+                  colour,
+                  size,
+                  garment: product.garment,
+                  imageUrl: product.imageUrl,
+                  tint: product.tint,
+                },
+                qty,
+                e.currentTarget.getBoundingClientRect(),
+                { silent: true },
+              );
               setAdded(true);
-              setTimeout(() => setAdded(false), 2000);
-              openBag();
+              setTimeout(() => setAdded(false), 1000);
             }}
             className="flex-1 rounded-full bg-ink py-3.5 font-semibold text-cream transition hover:opacity-90"
           >
-            {added ? "✓ Added to bag" : `Add to bag · ${formatMoney(product.priceCents * qty)}`}
+            {added ? "✓ Added" : `Add to bag · ${formatMoney(product.priceCents * qty)}`}
           </button>
         </div>
 

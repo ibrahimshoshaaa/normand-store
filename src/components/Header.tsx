@@ -1,8 +1,8 @@
 "use client";
 
 // Normand — sticky storefront header: wordmark, category nav, search overlay,
-// account link and the Bag pill. Mobile nav is a horizontal scroller with a
-// fade affordance so off-screen categories are visibly reachable.
+// account link and the Bag pill. On mobile the categories live in a
+// hamburger dropdown panel under the pill (the desktop nav is unchanged).
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -13,8 +13,9 @@ import { ProductImage } from "./ProductImage";
 
 export function Header({ categories }: { categories: { name: string; slug: string }[] }) {
   const router = useRouter();
-  const { count, openBag } = useCart();
+  const { count, openBag, bagButtonRef } = useCart();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<ProductView[]>([]);
   const [searching, setSearching] = useState(false);
@@ -24,6 +25,16 @@ export function Header({ categories }: { categories: { name: string; slug: strin
   useEffect(() => {
     if (searchOpen) inputRef.current?.focus();
   }, [searchOpen]);
+
+  // Close the mobile menu with Escape.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
 
   useEffect(() => {
     if (!searchOpen || query.trim().length < 2) {
@@ -62,6 +73,14 @@ export function Header({ categories }: { categories: { name: string; slug: strin
 
   return (
     <>
+      {/* Tap-outside layer for the mobile menu (under the sticky header). */}
+      {menuOpen && (
+        <div
+          aria-hidden="true"
+          className="fixed inset-0 z-30 md:hidden"
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
       <header className="sticky top-3 z-40 mx-auto w-[min(1200px,calc(100%-1.5rem))]">
         <div className="flex items-center justify-between gap-3 rounded-full bg-surface/90 px-4 py-2.5 shadow-[0_8px_30px_rgba(33,29,24,0.08)] backdrop-blur">
           <Link href="/" className="flex items-center gap-2" aria-label="Normand home">
@@ -95,6 +114,23 @@ export function Header({ categories }: { categories: { name: string; slug: strin
           <div className="flex items-center gap-1">
             <button
               type="button"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((v) => !v)}
+              className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-cream md:hidden"
+            >
+              {menuOpen ? (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                  <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+              ) : (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                  <path d="M4 7h16M4 12h16M4 17h16" />
+                </svg>
+              )}
+            </button>
+            <button
+              type="button"
               aria-label="Search"
               onClick={() => setSearchOpen(true)}
               className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-cream"
@@ -116,6 +152,7 @@ export function Header({ categories }: { categories: { name: string; slug: strin
             </Link>
             <button
               type="button"
+              ref={bagButtonRef}
               onClick={openBag}
               className="flex items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-cream"
               aria-label={`Open bag, ${count} items`}
@@ -132,22 +169,55 @@ export function Header({ categories }: { categories: { name: string; slug: strin
           </div>
         </div>
 
-        <nav
-          aria-label="Categories"
-          className="nav-fade no-scrollbar mt-2 flex gap-5 overflow-x-auto rounded-full bg-surface/80 px-4 py-2 text-sm font-medium shadow-sm backdrop-blur md:hidden"
-        >
-          <Link href="/shop" className="shrink-0">
-            Shop all
-          </Link>
-          {categories.map((c) => (
-            <Link key={c.slug} href={`/shop?category=${c.slug}`} className="shrink-0">
-              {c.name}
-            </Link>
-          ))}
-          <Link href="/track" className="shrink-0">
-            Track order
-          </Link>
-        </nav>
+        {/* Mobile menu dropdown (replaces the old scrolling second-row nav). */}
+        {menuOpen && (
+          <div className="menu-drop mt-2 rounded-[24px] bg-surface px-3 py-3 shadow-xl md:hidden">
+            <div className="flex items-center justify-between px-2 pb-1">
+              <span className="text-xs font-bold uppercase tracking-widest text-ink-soft">Menu</span>
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={() => setMenuOpen(false)}
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-cream text-lg leading-none"
+              >
+                ×
+              </button>
+            </div>
+            <nav aria-label="Mobile menu" className="flex flex-col">
+              <Link
+                href="/shop"
+                onClick={() => setMenuOpen(false)}
+                className="rounded-full px-3 py-2.5 font-semibold hover:bg-cream"
+              >
+                Shop all
+              </Link>
+              {categories.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/shop?category=${c.slug}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="rounded-full px-3 py-2.5 font-semibold hover:bg-cream"
+                >
+                  {c.name}
+                </Link>
+              ))}
+              <Link
+                href="/track"
+                onClick={() => setMenuOpen(false)}
+                className="rounded-full px-3 py-2.5 font-semibold hover:bg-cream"
+              >
+                Track order
+              </Link>
+              <Link
+                href="/account"
+                onClick={() => setMenuOpen(false)}
+                className="rounded-full px-3 py-2.5 font-semibold hover:bg-cream"
+              >
+                Your account
+              </Link>
+            </nav>
+          </div>
+        )}
       </header>
 
       {searchOpen && (

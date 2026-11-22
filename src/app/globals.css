@@ -89,7 +89,7 @@ h3,
   }
 }
 .spin-slow {
-  animation: spin-slow 18s linear infinite;
+  animation: spin-slow 22s linear infinite;
 }
 
 /* Toast slide-up */
@@ -109,25 +109,123 @@ h3,
 
 /* Bag drawer */
 .drawer {
-  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .drawer-backdrop {
-  transition: opacity 0.35s ease;
+  transition: opacity 0.3s ease;
 }
 
-/* Fly-to-bag dot */
+/* Fly-to-bag thumbnail: detaches from the clicked add button and flies
+   diagonally to the header Bag button, shrinking as it goes. The --fly-x
+   and --fly-y custom properties are the deltas to the bag button centre. */
 @keyframes fly-to-bag {
   0% {
     opacity: 1;
     transform: translate(0, 0) scale(1);
   }
+  70% {
+    opacity: 1;
+  }
   100% {
     opacity: 0;
-    transform: translate(var(--fly-x, 120px), var(--fly-y, -120px)) scale(0.3);
+    transform: translate(var(--fly-x, 120px), var(--fly-y, -120px)) scale(0.15);
   }
 }
-.fly-dot {
-  animation: fly-to-bag 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+.fly-thumb {
+  animation: fly-to-bag 0.8s cubic-bezier(0.25, 0.7, 0.35, 1) both;
+  will-change: transform, opacity;
+}
+
+/* Delivery truck travelling the dashed line in the Free-over-$150 tile */
+@keyframes truck-drive {
+  from {
+    left: -56px;
+  }
+  to {
+    left: 100%;
+  }
+}
+.truck-drive {
+  animation: truck-drive 6s linear infinite;
+}
+
+/* Favourites filter: brief fade-in of the new cards */
+@keyframes fav-fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fav-fade {
+  animation: fav-fade 0.3s ease both;
+}
+
+/* Mobile menu dropdown sliding down under the header pill */
+@keyframes menu-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.menu-drop {
+  animation: menu-drop 0.25s ease both;
+}
+
+/* Hero load entrance: headline words slide up + fade one by one,
+   then the paragraph and buttons follow, all staggered via --hero-delay. */
+@keyframes hero-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.6em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.hero-word {
+  display: inline-block;
+  animation: hero-word-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--hero-delay, 0ms);
+}
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.hero-enter {
+  animation: hero-enter 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--hero-delay, 0ms);
+}
+
+/* Slow idle drift on product photos (from the demo's second video):
+   the hero chair and tile images breathe almost imperceptibly while the
+   page sits still — a slow scale + rise, ~9s loop. Uses `transform`, so
+   it composes with the hover zoom, which uses the `scale` property. */
+@keyframes idle-drift {
+  0%,
+  100% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.03) translateY(-5px);
+  }
+}
+.idle-drift {
+  animation: idle-drift 9s ease-in-out infinite;
 }
 
 /* Thin scrollbars for the horizontal nav */
@@ -168,7 +266,17 @@ h3,
     transition: none;
   }
   .marquee-track,
-  .spin-slow {
+  .spin-slow,
+  .truck-drive,
+  .idle-drift,
+  .fav-fade,
+  .menu-drop,
+  .fly-thumb,
+  .hero-word,
+  .hero-enter {
     animation: none;
+  }
+  .truck-drive {
+    opacity: 0;
   }
 }
