@@ -105,7 +105,7 @@ export function ProductCard({ product }: { product: ProductView }) {
             −{Math.round((1 - product.priceCents / product.compareCents) * 100)}%
           </span>
         )}
-        <span className="absolute bottom-3 right-3 opacity-0 transition group-hover:opacity-100">
+        <span className="absolute bottom-3 right-3">
           <QuickAddButton product={product} />
         </span>
       </div>

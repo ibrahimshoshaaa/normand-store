@@ -37,24 +37,28 @@ export default async function HomePage() {
     <div className="mx-auto w-[min(1200px,calc(100%-1.5rem))] pt-6">
       {/* Hero bento */}
       <section aria-label="Featured" className="grid gap-4 md:grid-cols-3">
-        <div className="hero-enter rounded-[24px] bg-surface p-8 md:col-span-2 md:p-10">
-          <h1 className="font-display text-5xl font-extrabold leading-[0.95] md:text-7xl">
-            <span className="hero-word" style={{ "--hero-delay": "120ms" } as React.CSSProperties}>Calm</span>{" "}
-            <span className="hero-word" style={{ "--hero-delay": "210ms" } as React.CSSProperties}>clothing</span>
+        <div className="hero-enter rounded-[24px] bg-surface p-6 md:col-span-2 md:p-10">
+          <p className="hero-enter inline-flex items-center gap-2 rounded-full bg-cream px-3.5 py-1.5 text-sm font-medium" style={{ "--hero-delay": "0ms" } as React.CSSProperties}>
+            <span className="h-2 w-2 rounded-full bg-[#2563eb]" aria-hidden="true" />
+            New season · 8 pieces just landed
+          </p>
+          <h1 className="mt-4 font-display text-4xl font-extrabold leading-[0.95] sm:text-5xl md:text-7xl">
+            <span className="hero-word-mask"><span className="hero-word" style={{ "--hero-delay": "80ms" } as React.CSSProperties}>Calm</span></span>{" "}
+            <span className="hero-word-mask"><span className="hero-word" style={{ "--hero-delay": "170ms" } as React.CSSProperties}>clothing</span></span>
             <br />
-            <span className="hero-word" style={{ "--hero-delay": "300ms" } as React.CSSProperties}>for</span>{" "}
-            <span className="hero-word" style={{ "--hero-delay": "390ms" } as React.CSSProperties}>slow</span>{" "}
-            <span className="hero-word" style={{ "--hero-delay": "480ms" } as React.CSSProperties}>days.</span>
+            <span className="hero-word-mask"><span className="hero-word" style={{ "--hero-delay": "260ms" } as React.CSSProperties}>for</span></span>{" "}
+            <span className="hero-word-mask"><span className="hero-word" style={{ "--hero-delay": "350ms" } as React.CSSProperties}>slow</span></span>{" "}
+            <span className="hero-word-mask"><span className="hero-word" style={{ "--hero-delay": "440ms" } as React.CSSProperties}>days.</span></span>
           </h1>
-          <p className="hero-enter mt-5 max-w-md text-lg text-ink-soft" style={{ "--hero-delay": "560ms" } as React.CSSProperties}>
+          <p className="hero-enter mt-4 max-w-md text-base text-ink-soft md:text-lg" style={{ "--hero-delay": "520ms" } as React.CSSProperties}>
             Clothing that softens a day, not fills it. Heavy cotton, washed linen and
             brushed wool — no noise, no fast fashion.
           </p>
-          <div className="hero-enter mt-8 flex flex-wrap gap-3" style={{ "--hero-delay": "700ms" } as React.CSSProperties}>
-            <Link href="/shop" className="rounded-full bg-ink px-6 py-3.5 font-semibold text-cream">
+          <div className="hero-enter mt-6 flex flex-wrap gap-2 sm:gap-3" style={{ "--hero-delay": "640ms" } as React.CSSProperties}>
+            <Link href="/shop" className="whitespace-nowrap rounded-full bg-ink px-5 py-3 text-sm font-semibold text-cream sm:px-6 sm:py-3.5 sm:text-base">
               Shop the collection
             </Link>
-            <Link href="#our-way" className="rounded-full border border-black/20 bg-surface px-6 py-3.5 font-semibold">
+            <Link href="#our-way" className="whitespace-nowrap rounded-full border border-black/20 bg-surface px-5 py-3 text-sm font-semibold sm:px-6 sm:py-3.5 sm:text-base">
               Our story
             </Link>
           </div>
