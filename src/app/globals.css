@@ -109,9 +109,13 @@ h3,
   animation: toast-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-/* Bag drawer — like the demo, it slides in as a floating panel in ~0.3s. */
+/* Bag drawer — like the demo, it slides in as a floating panel in ~0.3s
+   with the demo's expo ease (fast start, long settle). NOTE: Tailwind v4
+   translate utilities use the standalone `translate` property, NOT
+   `transform` — so the transition MUST name `translate`, or the drawer
+   snaps open with no animation at all (that bug shipped in 819d7d0). */
 .drawer {
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: translate 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .drawer-backdrop {
   transition: opacity 0.3s ease;
