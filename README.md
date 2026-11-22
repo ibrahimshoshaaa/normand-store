@@ -1,85 +1,115 @@
 # Normand — Calm clothing for slow days
 
-A minimalist clothing store with a full admin dashboard, built as a standalone
-Next.js app you can own, deploy, and extend. A clean-room rebuild of the
-original bento store template — same calm cream design, same pages and
-flows — rebranded as **Normand** and wired to **Neon Postgres**.
+A minimalist clothing store with a full admin dashboard — built as a standalone
+Next.js app you can own, deploy, and extend. Warm cream design, Egyptian
+prices (EGP), cash on delivery, and real product photography.
+
+**Live demo:** https://normand-store.vercel.app/ · https://normand.shotechsolutions.net/
+
+<p align="center">
+  <img src="https://res.cloudinary.com/dzbvceezc/image/upload/havn-wool-coat.jpg" alt="Havn Wool Coat — Normand hero product" width="420">
+</p>
+
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8)
+![Prisma](https://img.shields.io/badge/Prisma-6-2d3748)
+![Neon Postgres](https://img.shields.io/badge/Neon-Postgres-00e5a0)
+![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-black)
+
+## What's inside
+
+**Storefront**
+
+- Bento hero with masked word-reveal animation, marquee, "This week's
+  favourites", category tiles, Our Way scroll-reveal stats, Our Promise,
+  reviews, newsletter signup, and a black footer with a giant wordmark
+- Spinning material badge on the hero product — circular text on an SVG path
+  with a still leaf icon in the centre (14s rotation, like the original template)
+- Lenis smooth scrolling, scroll reveals, count-up numbers, hover zoom, and a
+  slow idle drift on product photos
+- Fixed light theme only — there is deliberately no dark-mode media query, so
+  the store always looks the same
+
+**Shopping**
+
+- Shop with live search, category filter, and sorting
+- Product pages — colour and size swatches (XS–XL), quantity stepper,
+  fly-to-bag animation, "You may also like"
+- Bag drawer — a floating rounded panel that slides in with the demo's expo
+  ease; free-delivery progress bar (free over **EGP 1,500**), quantity steppers,
+  per-item cards
+- Checkout — delivery address, Standard (free) / Express (+EGP 100, free over
+  EGP 1,500), and **cash on delivery** as the only payment method
+- Thank-you page with order code (e.g. `NM-4293`) and order tracking
+  (Preparing → Shipped → Delivered)
+- Account — sign in by email to see your orders
+
+**Admin dashboard** (`/admin`, password-gated)
+
+- Overview KPIs (revenue, orders, AOV, customers), 30-day revenue/orders
+  chart, sales-by-category donut, live orders, top products
+- Orders — status selector with instant "Saved ✓" feedback, per-order detail page
+- Products — full editor (fields, live/draft switch, low-stock filter, add,
+  two-step delete); Categories — rename in place; Subscribers — newsletter signups
 
 ## Stack
 
 - **Next.js 16** (App Router) + **React 19** + **TypeScript**
 - **Tailwind CSS 4** — warm cream `#f3efe6`, black text/buttons, pastel cards,
-  ~24px rounded corners, pill buttons. **Fixed light theme only** — there is
-  deliberately no dark-mode media query, so the store always looks the same.
+  ~24px rounded corners, pill buttons
 - **Prisma 6** + **Neon Postgres** (Frankfurt `eu-central-1`)
-- **Lenis** smooth scrolling + IntersectionObserver scroll reveals, count-up
-  KPIs, marquee, rotating badge, sliding bag drawer
-- Product visuals are self-contained inline SVG (no external images), so the
-  store renders identically offline and on Vercel. Swap `ProductImage` for real
-  photos when you have them.
-
-## What's inside
-
-- **Storefront** — bento hero, marquee, "This week's favourites", categories
-  bento, Our Way scroll-reveal, Our Promise, reviews, newsletter, black footer
-- **Shop** — live search, category filter, sorting
-- **Product page** — colour/size swatches (XS–XL), quantity, Add to bag,
-  "You may also like"
-- **Bag drawer** — slides from the right, free-shipping progress bar (free over $150)
-- **Checkout** — "Almost yours." delivery address, Standard (free) / Express (+$25),
-  demo card step (no real payment — connect Stripe before selling for real)
-- **Thank-you page** with order code (e.g. `NM-2401`) + **order tracking**
-  (Preparing → Shipped → Delivered)
-- **Account** — demo sign-in by email, lists your orders
-- **Admin dashboard** (`/admin`) — password-gated with `ADMIN_PASSWORD`
-  (see below). Overview KPIs (revenue, orders, AOV, customers), 30-day
-  revenue/orders chart, sales-by-category donut, live orders, top products,
-  plus Orders (status selector + per-order detail page), Products (editor: edit
-  fields, live/draft switch, low-stock filter, add, two-step delete),
-  Categories (rename in place) and Subscribers (newsletter signups).
-
-## Database
-
-Neon project **Normand** (`calm-pond-67213265`), region **AWS Europe Central 1
-(Frankfurt)**, database **`normand`** (Postgres 18, production branch). An older empty database on the same branch exists but is unused.
-
-Tables (Prisma): `Category`, `Product`, `Customer`, `Order`, `OrderItem`, `Subscriber`.
-
-## Admin access
-
-`/admin` is protected by a password. Set `ADMIN_PASSWORD` in `.env` locally
-(and as a Vercel env var in production) to a long random value, then sign in at
-`/admin/login` — the session cookie is httpOnly, HMAC-signed and lasts 7 days.
-If `ADMIN_PASSWORD` is not set, the dashboard stays open and shows a warning
-banner instead. After pulling a version that adds a table (e.g. `Subscriber`),
-run `npm run db:push` once against Neon so the new table exists.
+- **Lenis** smooth scrolling · **Bricolage Grotesque** display font + **DM Sans** body
+- Product photos on **Cloudinary** · Deployed on **Vercel**
 
 ## Run locally
 
 ```bash
 cp .env.example .env        # put your Neon connection string in DATABASE_URL
 npm install
-npx prisma migrate deploy   # or: npm run db:push  (creates the tables)
-npm run seed                # 5 categories, 8 products, ~497 demo orders (~$163k)
+npm run db:push             # create the tables in Neon
+npm run seed                # 5 categories, 8 products, ~500 demo orders
 npm run dev                 # http://localhost:3000
 ```
 
-No database? The store still runs: with no `DATABASE_URL` it uses the static
-catalog and generated demo orders in memory (demo mode). Connect Neon to make
-orders and admin edits persist.
+No database? The store still runs: with no `DATABASE_URL` it falls back to the
+static catalog and generated demo orders in memory (demo mode). Connect Neon to
+make orders and admin edits persist.
 
 ## Deploy to Vercel
 
-1. Push this folder to a **private GitHub repo** (e.g. `normand-store`).
+1. Fork or clone this repo.
 2. In Vercel: **Add New → Project → Import** the repo.
-3. Set the environment variable `DATABASE_URL` to your Neon pooled connection
-   string (Neon dashboard → project Normand → Connection string → pooled,
-   `...-pooler.eu-central-1.aws.neon.tech/normand?sslmode=require`).
-4. Deploy. Vercel runs `npm install`, `prisma generate` (part of `npm run build`)
-   and `next build` automatically.
+3. Set the environment variables `DATABASE_URL` (your Neon pooled connection
+   string) and `ADMIN_PASSWORD` (a long random value for `/admin`).
+4. Deploy. Vercel runs `npm install`, `prisma generate` (part of
+   `npm run build`) and `next build` automatically.
 5. After the first deploy, run the seed once against Neon from your machine:
-   `DATABASE_URL="..." npm run seed` (or `npx prisma migrate deploy` first if
-   you haven't created the tables yet).
+   `DATABASE_URL="..." npm run seed`.
+
+## Admin access
+
+`/admin` is protected by a password. Set `ADMIN_PASSWORD` in `.env` locally
+(and as a Vercel env var in production), then sign in at `/admin/login` — the
+session cookie is httpOnly, HMAC-signed and lasts 7 days. If `ADMIN_PASSWORD`
+is not set, the dashboard stays open and shows a warning banner instead.
+
+## Project structure
+
+```
+src/
+  app/
+    (store)/            # storefront: home, shop, product/[slug], checkout,
+                        #   thank-you, track, account
+    admin/              # admin login + dashboard (orders, products,
+                        #   categories, subscribers)
+    api/                # orders, products, newsletter, auth
+  components/           # Header, BagDrawer, ProductCard, ProductDetail, ...
+  lib/                  # Prisma client, catalog, formatting, cart
+prisma/
+  schema.prisma         # Category, Product, Customer, Order, OrderItem, Subscriber
+  seed.ts               # demo catalog + orders
+```
 
 ## Scripts
 
@@ -88,17 +118,24 @@ orders and admin edits persist.
 | `npm run dev` | Dev server on http://localhost:3000 |
 | `npm run build` | `prisma generate` + production build |
 | `npm start` | Serve the production build |
-| `npm run seed` | Seed Neon with catalog + ~497 demo orders |
+| `npm run seed` | Seed Neon with catalog + ~500 demo orders |
 | `npm run db:migrate` | Create a new Prisma migration (dev) |
 | `npm run db:deploy` | Apply migrations (production) |
 | `npm run db:push` | Push the schema to Neon without a migration |
 
-## Notes / before going live
+## Notes
 
-- **Payments are not included.** Checkout is a demo flow. Connect Stripe (or
-  another provider) in `src/app/(store)/checkout/page.tsx` before taking real money.
-- **Auth is demo-grade.** Account sign-in is email-only. The admin area is
-  password-gated (`ADMIN_PASSWORD`, see above) — set a strong password before
-  launch.
+- **Payments:** cash on delivery only — no card processing in this build.
+- **Auth is demo-grade.** Account sign-in is email-only. Set a strong
+  `ADMIN_PASSWORD` before launch.
 - Demo orders are generated deterministically, so the dashboard shows the same
-  ~$163k / 497 orders on every fresh seed.
+  ~500 orders on every fresh seed.
+
+## Built by
+
+[ShoTech Solutions](https://www.shotechsolutions.net/) — Ibrahim Shosha,
+Full Stack Developer (Flutter, Next.js, Node.js, PostgreSQL).
+
+## License
+
+MIT — see [LICENSE](LICENSE).
