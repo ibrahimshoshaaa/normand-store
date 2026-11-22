@@ -83,7 +83,19 @@ export function Header({ categories }: { categories: { name: string; slug: strin
       )}
       <header className="sticky top-3 z-40 mx-auto w-[min(1200px,calc(100%-1.5rem))]">
         <div className="flex items-center justify-between gap-3 rounded-full bg-surface/90 px-4 py-2.5 shadow-[0_8px_30px_rgba(33,29,24,0.08)] backdrop-blur">
-          <Link href="/" className="flex items-center" aria-label="Normand home">
+          <Link href="/" className="flex items-center gap-2" aria-label="Normand home">
+            <svg
+              viewBox="0 0 24 24"
+              className="h-7 w-7 text-ink"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M6 20V4l12 16V4" />
+            </svg>
             <span className="font-display text-[22px] font-bold tracking-[-0.04em] sm:text-xl">Normand</span>
           </Link>
 
