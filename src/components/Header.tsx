@@ -84,9 +84,7 @@ export function Header({ categories }: { categories: { name: string; slug: strin
       <header className="sticky top-3 z-40 mx-auto w-[min(1200px,calc(100%-1.5rem))]">
         <div className="flex items-center justify-between gap-3 rounded-full bg-surface/90 px-4 py-2.5 shadow-[0_8px_30px_rgba(33,29,24,0.08)] backdrop-blur">
           <Link href="/" className="flex items-center gap-2" aria-label="Normand home">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink font-display text-lg font-bold text-cream">
-              N
-            </span>
+            <span aria-hidden="true" className="h-8 w-8 shrink-0 rounded-full bg-ink" />
             <span className="font-display text-[22px] font-bold tracking-[-0.04em] sm:text-xl">NORMAND</span>
           </Link>
 
