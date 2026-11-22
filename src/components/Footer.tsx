@@ -52,7 +52,7 @@ export function Footer({ categories }: { categories: { name: string; slug: strin
             aria-hidden="true"
             className="mt-12 select-none whitespace-nowrap font-display text-[15vw] font-bold leading-[0.78] tracking-[-0.06em] text-cream md:text-[9rem]"
           >
-            NORMAND
+            Normand
           </p>
           <p className="mt-6 border-t border-cream/15 pt-4 text-sm text-cream/50">
             © 2026 Normand

@@ -22,7 +22,7 @@ export default async function AdminLoginPage({
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink font-display text-lg font-bold text-cream">
             N
           </span>
-          <span className="font-display text-xl font-extrabold">NORMAND</span>
+          <span className="font-display text-xl font-extrabold">Normand</span>
         </Link>
         <h1 className="mt-6 font-display text-3xl font-extrabold">Admin sign-in</h1>
         <p className="mt-1 text-sm text-ink-soft">

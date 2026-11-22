@@ -44,7 +44,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink font-display text-lg font-bold text-cream">
                   N
                 </span>
-                <span className="font-display text-xl font-extrabold">NORMAND</span>
+                <span className="font-display text-xl font-extrabold">Normand</span>
               </AdminNavLink>
               <nav aria-label="Admin" className="mt-6 space-y-1">
                 {NAV.map((item) => (
