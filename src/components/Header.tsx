@@ -87,7 +87,7 @@ export function Header({ categories }: { categories: { name: string; slug: strin
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink font-display text-lg font-bold text-cream">
               N
             </span>
-            <span className="font-display text-lg font-extrabold tracking-tight sm:text-xl">NORMAND</span>
+            <span className="font-display text-[22px] font-bold tracking-[-0.04em] sm:text-xl">NORMAND</span>
           </Link>
 
           <nav

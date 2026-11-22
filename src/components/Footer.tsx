@@ -50,7 +50,7 @@ export function Footer({ categories }: { categories: { name: string; slug: strin
           </div>
           <p
             aria-hidden="true"
-            className="mt-12 select-none whitespace-nowrap font-display text-[15vw] font-extrabold leading-none tracking-tight text-cream md:text-[9rem]"
+            className="mt-12 select-none whitespace-nowrap font-display text-[15vw] font-bold leading-[0.78] tracking-[-0.06em] text-cream md:text-[9rem]"
           >
             NORMAND
           </p>
