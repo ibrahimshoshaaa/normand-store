@@ -1,0 +1,93 @@
+// Normand — Prisma schema (Neon Postgres, no Firebase anywhere).
+// DATABASE_URL is read from the environment (.env locally, Vercel env vars in production).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  tint      String    @default("#dfe8d8") // pastel tile colour for the bento
+  sortOrder Int       @default(0)
+  products  Product[]
+  createdAt DateTime  @default(now())
+}
+
+model Product {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  description  String   @default("")
+  blurb        String   @default("")
+  priceCents   Int
+  compareCents Int?
+  badge        String?
+  rating       Float    @default(0)
+  reviews      Int      @default(0)
+  colours      Json     @default("[]") // [{ name, hex }]
+  sizes        Json     @default("[\"XS\",\"S\",\"M\",\"L\",\"XL\"]")
+  stock        Int      @default(0)
+  live         Boolean  @default(true)
+  garment      String   @default("tee") // key for the local SVG product visual
+  tint         String   @default("#f6ead0") // pastel card background
+  categoryId   String
+  category     Category @relation(fields: [categoryId], references: [id])
+  orderItems   OrderItem[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([live])
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  city      String   @default("")
+  orders    Order[]
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id             String      @id @default(cuid())
+  code           String      @unique // e.g. NM-2898
+  customerId     String?
+  customer       Customer?   @relation(fields: [customerId], references: [id])
+  customerName   String
+  email          String
+  city           String      @default("")
+  address        String      @default("")
+  deliveryMethod String      @default("Standard") // Standard | Express
+  itemsCents     Int
+  deliveryCents  Int         @default(0)
+  totalCents     Int
+  status         String      @default("PREPARING") // PREPARING | SHIPPED | DELIVERED
+  items          OrderItem[]
+  createdAt      DateTime    @default(now())
+
+  @@index([email])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  orderId    String
+  order      Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId  String?
+  product    Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  name       String
+  priceCents Int
+  quantity   Int     @default(1)
+  colour     String  @default("")
+  size       String  @default("M")
+
+  @@index([orderId])
+}
