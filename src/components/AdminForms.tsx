@@ -229,11 +229,11 @@ export function ProductsManager({
           </select>
         </label>
         <label className="text-sm font-semibold">
-          Price ($)
+          Price (EGP)
           <input required type="number" min="0" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className="mt-1 w-full rounded-2xl border border-black/15 bg-surface px-4 py-2.5 outline-none" />
         </label>
         <label className="text-sm font-semibold">
-          Compare-at price ($, optional)
+          Compare-at price (EGP, optional)
           <input type="number" min="0" step="0.01" value={form.compare} onChange={(e) => setForm({ ...form, compare: e.target.value })} className="mt-1 w-full rounded-2xl border border-black/15 bg-surface px-4 py-2.5 outline-none" />
         </label>
         <label className="text-sm font-semibold">

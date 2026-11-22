@@ -1,6 +1,11 @@
+// Amounts are stored in piasters (1 EGP = 100 piasters) and rendered as
+// "EGP 1,150" — no decimals for whole pounds, two decimals otherwise.
 export function formatMoney(cents: number): string {
-  const dollars = cents / 100;
-  return Number.isInteger(dollars) ? `$${dollars}` : `$${dollars.toFixed(2)}`;
+  const pounds = cents / 100;
+  const formatted = Number.isInteger(pounds)
+    ? pounds.toLocaleString("en-US")
+    : pounds.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return `EGP ${formatted}`;
 }
 
 export function formatDate(d: Date | string): string {

@@ -44,10 +44,10 @@ export const SIZES = ["XS", "S", "M", "L", "XL"];
 export const PRODUCTS: ProductSeed[] = [
   {
     slug: "ro-heavy-tee",
-    name: "Ro Heavy Tee",
+    name: "T-shirts Oversized fit round-neck",
     categorySlug: "t-shirts",
-    priceCents: 4800,
-    compareCents: 6400,
+    priceCents: 45000,
+    compareCents: 75000,
     badge: "Bestseller",
     rating: 4.8,
     reviews: 214,
@@ -67,9 +67,10 @@ export const PRODUCTS: ProductSeed[] = [
   },
   {
     slug: "dune-oversized-hoodie",
-    name: "Dune Oversized Hoodie",
+    name: "Sweatshirts Oversized fit plain",
     categorySlug: "hoodies-sweats",
-    priceCents: 9200,
+    priceCents: 85000,
+    compareCents: 140000,
     badge: "This week's favourite",
     rating: 4.9,
     reviews: 186,
@@ -89,10 +90,10 @@ export const PRODUCTS: ProductSeed[] = [
   },
   {
     slug: "havn-wool-coat",
-    name: "Havn Wool Coat",
+    name: "Coats Regular fit plain",
     categorySlug: "jackets",
-    priceCents: 23200,
-    compareCents: 29000,
+    priceCents: 190000,
+    compareCents: 320000,
     badge: "New in",
     rating: 4.9,
     reviews: 128,
@@ -111,9 +112,10 @@ export const PRODUCTS: ProductSeed[] = [
   },
   {
     slug: "linne-linen-dress",
-    name: "Linne Linen Dress",
+    name: "Dresses Regular fit plain",
     categorySlug: "dresses",
-    priceCents: 14800,
+    priceCents: 125000,
+    compareCents: 210000,
     badge: "This week's favourite",
     rating: 4.8,
     reviews: 204,
@@ -132,9 +134,10 @@ export const PRODUCTS: ProductSeed[] = [
   },
   {
     slug: "pil-crew",
-    name: "Pil Crew Sweatshirt",
+    name: "Sweatshirts Regular fit plain",
     categorySlug: "hoodies-sweats",
-    priceCents: 7800,
+    priceCents: 75000,
+    compareCents: 125000,
     rating: 4.7,
     reviews: 96,
     colours: [
@@ -152,9 +155,10 @@ export const PRODUCTS: ProductSeed[] = [
   },
   {
     slug: "fjord-denim",
-    name: "Fjord Denim Jeans",
+    name: "Jeans Regular fit",
     categorySlug: "trousers",
-    priceCents: 11800,
+    priceCents: 80000,
+    compareCents: 135000,
     rating: 4.8,
     reviews: 167,
     colours: [
@@ -172,9 +176,10 @@ export const PRODUCTS: ProductSeed[] = [
   },
   {
     slug: "tailor-trouser",
-    name: "Tailor Trouser",
+    name: "Trousers Regular fit basic",
     categorySlug: "trousers",
-    priceCents: 12800,
+    priceCents: 95000,
+    compareCents: 160000,
     rating: 4.6,
     reviews: 89,
     colours: [
@@ -192,9 +197,10 @@ export const PRODUCTS: ProductSeed[] = [
   },
   {
     slug: "vida-jeans",
-    name: "Vida Straight Jeans",
+    name: "Jeans Regular fit basic",
     categorySlug: "trousers",
-    priceCents: 11000,
+    priceCents: 80000,
+    compareCents: 135000,
     rating: 4.7,
     reviews: 142,
     colours: [
@@ -212,5 +218,6 @@ export const PRODUCTS: ProductSeed[] = [
   },
 ];
 
-export const FREE_SHIPPING_THRESHOLD_CENTS = 15000;
-export const EXPRESS_SHIPPING_CENTS = 2500;
+// Prices are in piasters (1 EGP = 100 piasters); priceCents is the minor unit.
+export const FREE_SHIPPING_THRESHOLD_CENTS = 150000; // EGP 1,500
+export const EXPRESS_SHIPPING_CENTS = 10000; // EGP 100

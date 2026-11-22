@@ -50,7 +50,7 @@ export default async function AdminOverview() {
           <div key={k.label} className="rounded-[24px] bg-surface p-5">
             <p className="text-xs font-bold uppercase tracking-widest text-ink-soft">{k.label}</p>
             <p className="mt-2 font-display text-3xl font-extrabold">
-              {k.money ? "$" : ""}
+              {k.money ? "EGP " : ""}
               <CountUp value={k.money ? Math.round(k.cents / 100) : k.cents} />
             </p>
           </div>
@@ -69,14 +69,14 @@ export default async function AdminOverview() {
         <div className="rounded-[24px] bg-surface p-6">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-lg font-bold">Today</h2>
-            <span className="text-sm text-ink-soft">Goal $4,000</span>
+            <span className="text-sm text-ink-soft">Goal EGP 50,000</span>
           </div>
           <p className="mt-3 font-display text-3xl font-extrabold">{formatMoney(todayRevenue)}</p>
           <p className="text-sm text-ink-soft">
             {todayOrders.length} {todayOrders.length === 1 ? "order" : "orders"} so far
           </p>
           <div className="mt-3 h-2 overflow-hidden rounded-full bg-cream">
-            <div className="h-full rounded-full bg-ink" style={{ width: `${Math.min(100, (todayRevenue / 400000) * 100)}%` }} />
+            <div className="h-full rounded-full bg-ink" style={{ width: `${Math.min(100, (todayRevenue / 5000000) * 100)}%` }} />
           </div>
         </div>
 

@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/components/CartProvider";
 import { placeOrderAction } from "@/lib/actions";
 import { formatMoney } from "@/lib/format";
+import { EXPRESS_SHIPPING_CENTS, FREE_SHIPPING_THRESHOLD_CENTS } from "@/lib/catalog";
 import { ProductImage } from "@/components/ProductImage";
 
 export default function CheckoutPage() {
@@ -22,8 +23,8 @@ export default function CheckoutPage() {
   const [placing, setPlacing] = useState(false);
 
   const deliveryCents = useMemo(() => {
-    if (subtotalCents >= 15000) return 0;
-    return delivery === "Express" ? 2500 : 0;
+    if (subtotalCents >= FREE_SHIPPING_THRESHOLD_CENTS) return 0;
+    return delivery === "Express" ? EXPRESS_SHIPPING_CENTS : 0;
   }, [subtotalCents, delivery]);
   const total = subtotalCents + deliveryCents;
 
@@ -88,11 +89,11 @@ export default function CheckoutPage() {
               </div>
               <div className="sm:col-span-2">
                 <label htmlFor="address" className="text-sm font-semibold">Street address</label>
-                <input id="address" required value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Nørrebrogade 12" className={inputCls} />
+                <input id="address" required value={address} onChange={(e) => setAddress(e.target.value)} placeholder="15 Talaat Harb St" className={inputCls} />
               </div>
               <div className="sm:col-span-2">
                 <label htmlFor="city" className="text-sm font-semibold">City</label>
-                <input id="city" required value={city} onChange={(e) => setCity(e.target.value)} placeholder="Copenhagen" className={inputCls} />
+                <input id="city" required value={city} onChange={(e) => setCity(e.target.value)} placeholder="Cairo" className={inputCls} />
               </div>
             </div>
           </section>
@@ -103,7 +104,7 @@ export default function CheckoutPage() {
               {(
                 [
                   ["Standard", "Free · 2–3 days", 0],
-                  ["Express", "Next day · +$25 · Free over $150", 2500],
+                  ["Express", "Next day · +EGP 100 · Free over EGP 1,500", EXPRESS_SHIPPING_CENTS],
                 ] as const
               ).map(([method, label, fee]) => (
                 <button
@@ -118,7 +119,7 @@ export default function CheckoutPage() {
                   <span className="font-display font-bold">{method}</span>
                   <span className="block text-sm text-ink-soft">{label}</span>
                   <span className="mt-1 block text-sm font-semibold">
-                    {subtotalCents >= 15000 || method === "Standard" ? "Free" : formatMoney(fee)}
+                    {subtotalCents >= FREE_SHIPPING_THRESHOLD_CENTS || method === "Standard" ? "Free" : formatMoney(fee)}
                   </span>
                 </button>
               ))}

@@ -1,12 +1,17 @@
 // Normand — deterministic demo-order generator.
-// Produces ~497 orders over the last 30 days, roughly $158k in product sales
+// Produces ~497 orders over the last 30 days, roughly EGP 1.3m in product sales
 // (items only, before delivery), matching the feel of the original template's
 // dashboard. The same generator feeds:
 //  - the Prisma seed script (real rows in Neon), and
 //  - the in-memory demo fallback when no DATABASE_URL is configured.
 // Deterministic (seeded PRNG) so the dashboard is stable across restarts.
 
-import { PRODUCTS, type ProductSeed } from "./catalog";
+import {
+  EXPRESS_SHIPPING_CENTS,
+  FREE_SHIPPING_THRESHOLD_CENTS,
+  PRODUCTS,
+  type ProductSeed,
+} from "./catalog";
 
 export type DemoOrderItem = {
   slug: string;
@@ -34,22 +39,22 @@ export type DemoOrder = {
 };
 
 const CUSTOMERS: Array<[string, string, string]> = [
-  ["Zoe Keller", "Amsterdam", "Herengracht 12"],
-  ["Maya Sato", "Stockholm", "Söder Mälarstrand 4"],
-  ["Leila Novak", "Oslo", "Grünerløkka 18"],
-  ["Theo Mensah", "Copenhagen", "Nørrebrogade 12"],
-  ["Priya Berg", "Bergen", "Bryggen 3"],
-  ["Ines Costa", "London", "Columbia Road 21"],
-  ["Arjun Okafor", "New York", "Grand Street 88"],
-  ["Hugo Moreau", "Oslo", "Frognerveien 9"],
-  ["Nora Lindqvist", "Gothenburg", "Haga Nygata 7"],
-  ["Marco Jensen", "Copenhagen", "Jægersborggade 15"],
-  ["Amalie Berg", "Aarhus", "Frederiks Allé 31"],
-  ["Sofia Almeida", "Lisbon", "Rua das Flores 44"],
-  ["Jonas Weber", "Berlin", "Torstraße 101"],
-  ["Elena Rossi", "Milan", "Via Tortona 12"],
-  ["Lucas Dubois", "Paris", "Rue de Charonne 26"],
-  ["Freya Hansen", "Copenhagen", "Bredgade 58"],
+  ["Noura Hassan", "Cairo", "15 Talaat Harb St"],
+  ["Omar Adel", "Alexandria", "22 Fouad St"],
+  ["Mona Salem", "Giza", "8 Haram St"],
+  ["Karim Nabil", "Luxor", "5 Corniche El Nil"],
+  ["Sara Mahmoud", "Cairo", "30 Gameat El Dowal St"],
+  ["Ahmed El-Sayed", "Mansoura", "12 El Gomhouria St"],
+  ["Layla Ibrahim", "Tanta", "45 El Bahr St"],
+  ["Mostafa Ali", "Zagazig", "7 El Galaa St"],
+  ["Hana Mohamed", "Port Said", "18 Palestine St"],
+  ["Youssef Khaled", "Suez", "3 El Geish St"],
+  ["Mariam Tarek", "Hurghada", "27 Sheraton Rd"],
+  ["Amr Fathy", "Aswan", "9 Corniche El Nil"],
+  ["Dina Sherif", "Ismailia", "14 El Thalathiny St"],
+  ["Khaled Hassan", "Fayoum", "6 El Horreya St"],
+  ["Rania Atef", "Minya", "21 El Mahatta St"],
+  ["Mohamed Samir", "Assiut", "11 El Nemis St"],
 ];
 
 const SIZES = ["XS", "S", "M", "L", "XL"];
@@ -82,7 +87,7 @@ export function generateDemoOrders(
     const [name, city, address] = CUSTOMERS[Math.floor(rand() * CUSTOMERS.length)];
     const email = `${name.toLowerCase().replace(/[^a-z]+/g, ".")}@example.com`;
 
-    // 1–3 distinct products, 1–2 of each — average order ≈ $330.
+    // 1–3 distinct products, 1–2 of each — average order ≈ EGP 2,600.
     const itemCount = 1 + Math.floor(rand() * 3);
     const picked = [...products].sort(() => rand() - 0.5).slice(0, itemCount);
     const items: DemoOrderItem[] = picked.map((p) => {
@@ -99,7 +104,14 @@ export function generateDemoOrders(
 
     const itemsCents = items.reduce((s, it) => s + it.priceCents * it.quantity, 0);
     const express = rand() < 0.22;
-    const deliveryCents = itemsCents >= 15000 || !express ? (express ? 2500 : 0) : express ? 2500 : 0;
+    // Same rule as the storefront: free delivery over the threshold,
+    // otherwise Express costs the express fee and Standard is free.
+    const deliveryCents =
+      itemsCents >= FREE_SHIPPING_THRESHOLD_CENTS
+        ? 0
+        : express
+          ? EXPRESS_SHIPPING_CENTS
+          : 0;
     const status: DemoOrder["status"] =
       ageDays < 0.7 ? "PREPARING" : ageDays < 3 ? "SHIPPED" : "DELIVERED";
 

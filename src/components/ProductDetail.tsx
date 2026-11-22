@@ -136,7 +136,7 @@ export function ProductDetail({ product }: { product: ProductView }) {
 
         <div className="mt-6 divide-y divide-black/10 rounded-[24px] bg-surface px-5">
           {[
-            ["Delivery & returns", "Free delivery over $150. 30-night returns, no questions asked."],
+            ["Delivery & returns", "Free delivery over EGP 1,500. 30-night returns, no questions asked."],
             ["Materials", "Organic cotton, washed linen and brushed wool from certified workshops."],
             ["Warranty", "10-year warranty on seams and stitching."],
           ].map(([title, body]) => (

@@ -1,7 +1,7 @@
 "use client";
 
 // Normand — bag drawer sliding in from the right, with the free-shipping
-// progress bar (free over $150) and quantity steppers.
+// progress bar (free over EGP 1,500) and quantity steppers.
 import Link from "next/link";
 import { useCart } from "./CartProvider";
 import { FREE_SHIPPING_THRESHOLD_CENTS } from "@/lib/catalog";
@@ -47,7 +47,7 @@ export function BagDrawer() {
             </p>
           ) : (
             <p className="text-sm font-semibold text-leaf">
-              Free delivery on orders over $150 — you’ve unlocked it
+              Free delivery on orders over EGP 1,500 — you’ve unlocked it
             </p>
           )}
           <div className="mt-2 h-2 overflow-hidden rounded-full bg-cream">

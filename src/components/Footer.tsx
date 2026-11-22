@@ -10,7 +10,7 @@ export function Footer({ categories }: { categories: { name: string; slug: strin
         </p>
         <p className="mt-3 max-w-xl text-cream/70">
           Heavy cotton, washed linen and brushed wool from small workshops in
-          Portugal and Denmark. Dispatched in 48 hours.
+          Egypt. Dispatched in 48 hours.
         </p>
         <div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-3">
           <div>

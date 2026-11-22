@@ -4,7 +4,7 @@
 // The storefront therefore works out of the box, and every write (new order,
 // admin edits) still works in demo mode for the running server instance.
 
-import { CATEGORIES, PRODUCTS, type ProductSeed } from "./catalog";
+import { CATEGORIES, EXPRESS_SHIPPING_CENTS, FREE_SHIPPING_THRESHOLD_CENTS, PRODUCTS, type ProductSeed } from "./catalog";
 import { dailySeries, generateDemoOrders, salesByCategory, type DemoOrder } from "./demo";
 import { getPrisma } from "./prisma";
 
@@ -380,7 +380,11 @@ export async function createOrder(input: NewOrderInput): Promise<OrderView> {
   }
   if (items.length === 0) throw new Error("Your bag is empty.");
   const deliveryCents =
-    itemsCents >= 15000 ? 0 : input.deliveryMethod === "Express" ? 2500 : 0;
+    itemsCents >= FREE_SHIPPING_THRESHOLD_CENTS
+      ? 0
+      : input.deliveryMethod === "Express"
+        ? EXPRESS_SHIPPING_CENTS
+        : 0;
 
   const prisma = getPrisma();
   const code = `NM-${Math.floor(1000 + Math.random() * 9000)}`;

@@ -13,18 +13,18 @@ export const dynamic = "force-dynamic";
 const REVIEWS = [
   {
     stars: 5,
-    name: "Nora Lindqvist",
-    text: "The Havn coat is the first thing guests notice and the last thing they talk about. It holds its shape beautifully, winter after winter.",
+    name: "Noura Hassan",
+    text: "The coat is the first thing guests notice and the last thing they talk about. It holds its shape beautifully, winter after winter.",
   },
   {
     stars: 5,
-    name: "Marco Jensen",
-    text: "The Dune hoodie made our evenings slower. Heavy, soft, and the sand colour goes with absolutely everything.",
+    name: "Omar Adel",
+    text: "The hoodie made our evenings slower. Heavy, soft, and the sand colour goes with absolutely everything.",
   },
   {
     stars: 5,
-    name: "Amalie Berg",
-    text: "Ordered the Linne dress on a Monday, wore it to dinner on Thursday. The linen softens with every wash.",
+    name: "Mona Salem",
+    text: "Ordered the dress on a Monday, wore it to dinner on Thursday. The linen softens with every wash.",
   },
 ];
 
@@ -99,9 +99,9 @@ export default async function HomePage() {
           </Reveal>
         )}
         <Reveal delay={260} className="overflow-hidden rounded-[24px] bg-surface p-6 md:col-span-2">
-          <p className="font-display text-2xl font-bold">Free over $150</p>
+          <p className="font-display text-2xl font-bold">Free over EGP 1,500</p>
           <p className="mt-1 text-sm text-ink-soft">
-            Free delivery on orders over $150 — no code, no small print. Dispatched in 48 hours.
+            Free delivery on orders over EGP 1,500 — no code, no small print. Dispatched in 48 hours.
           </p>
           <div className="relative mt-6 h-9" aria-hidden="true">
             <div className="absolute inset-x-0 top-1/2 border-t-2 border-dashed border-ink/20" />

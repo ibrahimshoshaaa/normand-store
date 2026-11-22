@@ -136,7 +136,7 @@ h3,
   will-change: transform, opacity;
 }
 
-/* Delivery truck travelling the dashed line in the Free-over-$150 tile */
+/* Delivery truck travelling the dashed line in the Free-over-EGP-1,500 tile */
 @keyframes truck-drive {
   from {
     left: -56px;

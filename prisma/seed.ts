@@ -1,7 +1,7 @@
 // Normand — seed script.
 // Usage:  npm run seed        (needs DATABASE_URL pointing at Neon, database `normand`)
 // Clears demo data and re-creates the 5 categories, 8 products and ~497 demo
-// orders (~$163k revenue) so the admin dashboard looks alive on first login.
+// orders (~EGP 1.3m revenue) so the admin dashboard looks alive on first login.
 import { PrismaClient } from "@prisma/client";
 import { CATEGORIES, PRODUCTS } from "../src/lib/catalog";
 import { generateDemoOrders } from "../src/lib/demo";
@@ -96,7 +96,7 @@ async function main() {
   }
 
   const total = demo.reduce((s, o) => s + o.totalCents, 0) / 100;
-  console.log(`Created ${demo.length} demo orders, total $${total.toLocaleString()}.`);
+  console.log(`Created ${demo.length} demo orders, total EGP ${total.toLocaleString()}.`);
   console.log("Done. Run `npm run dev` and open http://localhost:3000");
 }
 

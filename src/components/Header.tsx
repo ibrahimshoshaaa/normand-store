@@ -87,7 +87,7 @@ export function Header({ categories }: { categories: { name: string; slug: strin
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink font-display text-lg font-bold text-cream">
               N
             </span>
-            <span className="font-display text-xl font-extrabold tracking-tight">NORMAND</span>
+            <span className="font-display text-lg font-extrabold tracking-tight sm:text-xl">NORMAND</span>
           </Link>
 
           <nav
@@ -133,7 +133,7 @@ export function Header({ categories }: { categories: { name: string; slug: strin
               type="button"
               aria-label="Search"
               onClick={() => setSearchOpen(true)}
-              className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-cream"
+              className="hidden h-10 w-10 items-center justify-center rounded-full hover:bg-cream md:flex"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <circle cx="11" cy="11" r="7" />
@@ -143,7 +143,7 @@ export function Header({ categories }: { categories: { name: string; slug: strin
             <Link
               href="/account"
               aria-label="Your account"
-              className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-cream"
+              className="hidden h-10 w-10 items-center justify-center rounded-full hover:bg-cream md:flex"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <circle cx="12" cy="8" r="4" />
@@ -184,6 +184,16 @@ export function Header({ categories }: { categories: { name: string; slug: strin
               </button>
             </div>
             <nav aria-label="Mobile menu" className="flex flex-col">
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setSearchOpen(true);
+                }}
+                className="rounded-full px-3 py-2.5 text-left font-semibold hover:bg-cream"
+              >
+                Search
+              </button>
               <Link
                 href="/shop"
                 onClick={() => setMenuOpen(false)}

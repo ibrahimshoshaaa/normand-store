@@ -1,8 +1,8 @@
 // Normand — scrolling marquee strip.
 const ITEMS = [
-  "Made in Portugal",
+  "Made in Egypt",
   "Small batches",
-  "Free delivery over $150",
+  "Free delivery over EGP 1,500",
   "Washed linen",
   "Made to last",
   "Dispatched in 48 hours",
