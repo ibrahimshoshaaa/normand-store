@@ -1,7 +1,7 @@
 "use client";
 
 // Normand — checkout ("Almost yours."): delivery address, delivery speed,
-// card details (no payment is processed online), order summary, place order.
+// cash on delivery (the only payment method), order summary, place order.
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,7 +18,6 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [delivery, setDelivery] = useState<"Standard" | "Express">("Standard");
-  const [card, setCard] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [placing, setPlacing] = useState(false);
 
@@ -128,18 +127,12 @@ export default function CheckoutPage() {
 
           <section className="rounded-[24px] bg-surface p-6">
             <h2 className="font-display text-xl font-bold">Payment</h2>
-            <p className="mt-1 text-sm text-ink-soft">
-              No payment is taken online — your order is placed without payment.
-            </p>
-            <label htmlFor="card" className="mt-4 block text-sm font-semibold">Card number</label>
-            <input
-              id="card"
-              inputMode="numeric"
-              value={card}
-              onChange={(e) => setCard(e.target.value.replace(/[^\d ]/g, "").slice(0, 19))}
-              placeholder="4242 4242 4242 4242"
-              className={inputCls}
-            />
+            <div className="mt-4 rounded-2xl border-2 border-ink bg-cream p-4">
+              <span className="font-display font-bold">Cash on delivery</span>
+              <span className="block text-sm text-ink-soft">
+                Pay in cash when your order arrives.
+              </span>
+            </div>
           </section>
 
           {error && (

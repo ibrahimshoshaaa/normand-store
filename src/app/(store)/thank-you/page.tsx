@@ -58,6 +58,10 @@ export default async function ThankYouPage({
             <dt>Delivery ({order.deliveryMethod})</dt>
             <dd>{order.deliveryCents === 0 ? "Free" : formatMoney(order.deliveryCents)}</dd>
           </div>
+          <div className="flex justify-between">
+            <dt>Payment</dt>
+            <dd>{order.paymentMethod}</dd>
+          </div>
           <div className="flex justify-between font-display text-lg font-bold">
             <dt>Total</dt>
             <dd>{formatMoney(order.totalCents)}</dd>
@@ -67,8 +71,8 @@ export default async function ThankYouPage({
           <Link href={`/track?code=${order.code}`} className="rounded-full bg-ink px-6 py-3 font-semibold text-cream">
             Track your order
           </Link>
-          <Link href="/admin" className="rounded-full border border-black/20 px-6 py-3 font-semibold">
-            See it in the dashboard
+          <Link href="/shop" className="rounded-full border border-black/20 px-6 py-3 font-semibold">
+            Continue shopping
           </Link>
         </div>
       </div>

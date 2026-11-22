@@ -51,6 +51,10 @@ export default async function AdminOrderDetail({
               <dt className="text-ink-soft">Delivery</dt>
               <dd className="font-semibold">{order.deliveryMethod}</dd>
             </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-ink-soft">Payment</dt>
+              <dd className="font-semibold">{order.paymentMethod}</dd>
+            </div>
           </dl>
         </section>
 

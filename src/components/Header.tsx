@@ -90,9 +90,6 @@ export function Header({ categories }: { categories: { name: string; slug: strin
             <Link href="/track" className="shrink-0 hover:underline">
               Track order
             </Link>
-            <Link href="/admin" className="shrink-0 hover:underline">
-              Admin
-            </Link>
           </nav>
 
           <div className="flex items-center gap-1">
@@ -149,9 +146,6 @@ export function Header({ categories }: { categories: { name: string; slug: strin
           ))}
           <Link href="/track" className="shrink-0">
             Track order
-          </Link>
-          <Link href="/admin" className="shrink-0">
-            Admin
           </Link>
         </nav>
       </header>

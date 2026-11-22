@@ -31,7 +31,7 @@ export default async function AdminOrders() {
               </p>
               <p className="text-sm text-ink-soft">
                 {o.items.map((i) => `${i.name} × ${i.quantity}`).join(", ")} ·{" "}
-                {formatDateTime(o.createdAt)} · {o.email}
+                {o.paymentMethod} · {formatDateTime(o.createdAt)} · {o.email}
               </p>
             </div>
             <span className="font-display text-lg font-bold">{formatMoney(o.totalCents)}</span>

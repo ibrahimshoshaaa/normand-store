@@ -67,6 +67,7 @@ model Order {
   city           String      @default("")
   address        String      @default("")
   deliveryMethod String      @default("Standard") // Standard | Express
+  paymentMethod  String      @default("Cash on delivery")
   itemsCents     Int
   deliveryCents  Int         @default(0)
   totalCents     Int

@@ -83,7 +83,7 @@ export default async function HomePage() {
 
         {dress && (
           <Reveal delay={200} className="rounded-[24px] bg-sun p-6">
-            <p className="font-display text-2xl font-bold">Soft light.</p>
+            <p className="font-display text-2xl font-bold">Soft linen.</p>
             <p className="mt-1 text-sm text-ink-soft">
               {dress.name} — washed linen for slow evenings.
             </p>

@@ -43,11 +43,6 @@ export function Footer({ categories }: { categories: { name: string; slug: strin
                   Track your order
                 </Link>
               </li>
-              <li>
-                <Link href="/admin" className="hover:underline">
-                  Dashboard
-                </Link>
-              </li>
             </ul>
           </div>
           <div>

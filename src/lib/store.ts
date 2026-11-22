@@ -57,6 +57,7 @@ export type OrderView = {
   city: string;
   address: string;
   deliveryMethod: string;
+  paymentMethod: string;
   itemsCents: number;
   deliveryCents: number;
   totalCents: number;
@@ -105,6 +106,7 @@ function demoOrders(): OrderView[] {
       city: o.city,
       address: o.address,
       deliveryMethod: o.deliveryMethod,
+      paymentMethod: o.paymentMethod,
       itemsCents: o.itemsCents,
       deliveryCents: o.deliveryCents,
       totalCents: o.totalCents,
@@ -247,6 +249,7 @@ export async function listOrders(): Promise<OrderView[]> {
         city: o.city,
         address: o.address,
         deliveryMethod: o.deliveryMethod,
+        paymentMethod: o.paymentMethod,
         itemsCents: o.itemsCents,
         deliveryCents: o.deliveryCents,
         totalCents: o.totalCents,
@@ -303,6 +306,7 @@ export async function getAdminStats() {
     city: o.city,
     address: o.address,
     deliveryMethod: o.deliveryMethod as "Standard" | "Express",
+    paymentMethod: o.paymentMethod as "Cash on delivery",
     items: o.items.map((it) => ({
       slug: it.slug,
       name: it.name,
@@ -390,6 +394,7 @@ export async function createOrder(input: NewOrderInput): Promise<OrderView> {
           city: input.city,
           address: input.address,
           deliveryMethod: input.deliveryMethod,
+          paymentMethod: "Cash on delivery",
           itemsCents,
           deliveryCents,
           totalCents: itemsCents + deliveryCents,
@@ -415,6 +420,7 @@ export async function createOrder(input: NewOrderInput): Promise<OrderView> {
         city: created.city,
         address: created.address,
         deliveryMethod: created.deliveryMethod,
+        paymentMethod: created.paymentMethod,
         itemsCents: created.itemsCents,
         deliveryCents: created.deliveryCents,
         totalCents: created.totalCents,
@@ -434,6 +440,7 @@ export async function createOrder(input: NewOrderInput): Promise<OrderView> {
     city: input.city,
     address: input.address,
     deliveryMethod: input.deliveryMethod,
+    paymentMethod: "Cash on delivery",
     itemsCents,
     deliveryCents,
     totalCents: itemsCents + deliveryCents,

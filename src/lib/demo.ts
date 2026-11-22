@@ -24,6 +24,7 @@ export type DemoOrder = {
   city: string;
   address: string;
   deliveryMethod: "Standard" | "Express";
+  paymentMethod: "Cash on delivery";
   items: DemoOrderItem[];
   itemsCents: number;
   deliveryCents: number;
@@ -109,6 +110,7 @@ export function generateDemoOrders(
       city,
       address,
       deliveryMethod: express ? "Express" : "Standard",
+      paymentMethod: "Cash on delivery",
       items,
       itemsCents,
       deliveryCents,

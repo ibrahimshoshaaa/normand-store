@@ -74,6 +74,7 @@ async function main() {
         city: o.city,
         address: o.address,
         deliveryMethod: o.deliveryMethod,
+        paymentMethod: "Cash on delivery",
         itemsCents: o.itemsCents,
         deliveryCents: o.deliveryCents,
         totalCents: o.totalCents,
