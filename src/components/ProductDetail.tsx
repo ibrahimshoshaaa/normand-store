@@ -39,13 +39,15 @@ export function ProductDetail({ product }: { product: ProductView }) {
       <div className="pt-2">
         <p className="text-sm uppercase tracking-wide text-ink-soft">{product.categoryName}</p>
         <h1 className="mt-1 font-display text-4xl font-extrabold leading-tight">{product.name}</h1>
-        <div className="mt-3 flex items-center gap-3">
-          <span className="font-display text-2xl font-bold">{formatMoney(product.priceCents)}</span>
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
+          <span className="whitespace-nowrap font-display text-2xl font-bold">{formatMoney(product.priceCents)}</span>
           {product.compareCents && (
-            <span className="text-lg text-ink-soft line-through">{formatMoney(product.compareCents)}</span>
+            <span className="whitespace-nowrap text-lg text-ink-soft line-through">{formatMoney(product.compareCents)}</span>
           )}
-          <Stars rating={product.rating} />
-          <span className="text-sm text-ink-soft">· {product.reviews} reviews</span>
+          <span className="flex items-center gap-1 whitespace-nowrap">
+            <Stars rating={product.rating} />
+            <span className="text-sm text-ink-soft">· {product.reviews} reviews</span>
+          </span>
         </div>
         <p className="mt-4 leading-relaxed text-ink-soft">{product.description}</p>
 
