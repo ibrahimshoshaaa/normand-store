@@ -71,7 +71,7 @@ export const PRODUCTS: ProductSeed[] = [
     categorySlug: "hoodies-sweats",
     priceCents: 85000,
     compareCents: 140000,
-    badge: "This week's favourite",
+    badge: "Favourite",
     rating: 4.9,
     reviews: 186,
     colours: [
@@ -116,7 +116,7 @@ export const PRODUCTS: ProductSeed[] = [
     categorySlug: "dresses",
     priceCents: 125000,
     compareCents: 210000,
-    badge: "This week's favourite",
+    badge: "Favourite",
     rating: 4.8,
     reviews: 204,
     colours: [

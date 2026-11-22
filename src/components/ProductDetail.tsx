@@ -131,12 +131,12 @@ export function ProductDetail({ product }: { product: ProductView }) {
         </div>
 
         <p className="mt-4 text-sm text-ink-soft">
-          Ships in 48h · 30-night trial · {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
+          Ships in 48h · 30-day trial · {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
         </p>
 
         <div className="mt-6 divide-y divide-black/10 rounded-[24px] bg-surface px-5">
           {[
-            ["Delivery & returns", "Free delivery over EGP 1,500. 30-night returns, no questions asked."],
+            ["Delivery & returns", "Free delivery over EGP 1,500. 30-day returns, no questions asked."],
             ["Materials", "Organic cotton, washed linen and brushed wool from certified workshops."],
             ["Warranty", "10-year warranty on seams and stitching."],
           ].map(([title, body]) => (

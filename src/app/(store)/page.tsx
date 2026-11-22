@@ -180,17 +180,17 @@ export default async function HomePage() {
           className="mt-4 font-display text-3xl font-bold leading-snug md:text-5xl"
           text="We make clothing slowly, for days that are lived in. Heavy fabrics, honest stitching, and nothing you have to think about — pieces that last longer than the season they were made for."
         />
-        <div className="mt-10 grid grid-cols-3 gap-4 text-center">
+        <div className="mt-10 grid grid-cols-3 gap-3 text-center sm:gap-4">
           {[
             { value: 12, suffix: "", label: "workshops" },
             { value: 100, suffix: "%", label: "organic cotton" },
             { value: 10, suffix: "", label: "year warranty" },
           ].map((s) => (
-            <Reveal key={s.label} className="rounded-[24px] bg-surface p-6">
-              <p className="font-display text-4xl font-extrabold md:text-5xl">
+            <Reveal key={s.label} className="min-w-0 rounded-[24px] bg-surface p-4 sm:p-6">
+              <p className="font-display text-3xl font-extrabold sm:text-4xl md:text-5xl">
                 <CountUp value={s.value} suffix={s.suffix} />
               </p>
-              <p className="mt-1 text-sm text-ink-soft">{s.label}</p>
+              <p className="mt-1 text-xs text-ink-soft sm:text-sm">{s.label}</p>
             </Reveal>
           ))}
         </div>
@@ -198,17 +198,17 @@ export default async function HomePage() {
 
       {/* Our Promise */}
       <section aria-label="Our promise" className="mt-16">
-        <Reveal className="rounded-[24px] bg-ink p-8 text-cream md:p-10">
+        <Reveal className="rounded-[24px] bg-ink p-6 text-cream sm:p-8 md:p-10">
           <h2 className="font-display text-3xl font-extrabold">Our promise, in writing.</h2>
           <div className="mt-8 grid grid-cols-2 gap-6 md:grid-cols-4">
             {[
               ["48h", "Ships in 48 hours"],
-              ["30 nights", "Try it at home"],
-              ["10 years", "Warranty on seams"],
+              ["30 days", "Easy returns"],
+              ["COD", "Cash on delivery"],
               ["100%", "Organic materials"],
             ].map(([big, small]) => (
-              <div key={small}>
-                <p className="font-display text-2xl font-bold">{big}</p>
+              <div key={small} className="min-w-0">
+                <p className="font-display text-xl font-bold sm:text-2xl">{big}</p>
                 <p className="mt-1 text-sm text-cream/70">{small}</p>
               </div>
             ))}
