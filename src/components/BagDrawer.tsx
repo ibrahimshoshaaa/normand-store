@@ -46,9 +46,7 @@ export function BagDrawer() {
               You’re <strong>{formatMoney(remaining)}</strong> away from free delivery
             </p>
           ) : (
-            <p className="text-sm font-semibold text-leaf">
-              Free delivery on orders over EGP 1,500 — you’ve unlocked it
-            </p>
+            <p className="text-sm font-semibold text-leaf">Free delivery unlocked</p>
           )}
           <div className="mt-2 h-2 overflow-hidden rounded-full bg-cream">
             <div className="h-full rounded-full bg-ink transition-all duration-500" style={{ width: `${progress}%` }} />
@@ -80,9 +78,21 @@ export function BagDrawer() {
                     className="h-20 w-20 shrink-0 rounded-2xl"
                   />
                   <div className="flex flex-1 flex-col">
-                    <div className="flex justify-between gap-2">
+                    <div className="flex items-start justify-between gap-2">
                       <p className="font-display font-bold leading-tight">{item.name}</p>
-                      <p className="font-display font-bold">{formatMoney(item.priceCents * item.quantity)}</p>
+                      <button
+                        type="button"
+                        onClick={() => removeItem(item.slug, item.colour, item.size)}
+                        aria-label={`Remove ${item.name} from bag`}
+                        className="shrink-0 p-1 text-ink-soft transition hover:text-ink"
+                      >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M3 6h18" />
+                          <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" />
+                          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                          <path d="M10 11v6M14 11v6" />
+                        </svg>
+                      </button>
                     </div>
                     <p className="text-sm text-ink-soft">
                       {item.colour} · Size {item.size}
@@ -107,13 +117,7 @@ export function BagDrawer() {
                           +
                         </button>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => removeItem(item.slug, item.colour, item.size)}
-                        className="text-sm text-ink-soft underline"
-                      >
-                        Remove
-                      </button>
+                      <p className="font-display font-bold">{formatMoney(item.priceCents * item.quantity)}</p>
                     </div>
                   </div>
                 </li>
@@ -128,13 +132,12 @@ export function BagDrawer() {
               <span>Subtotal</span>
               <span>{formatMoney(subtotalCents)}</span>
             </div>
-            <p className="mt-1 text-xs text-ink-soft">Delivery calculated at checkout.</p>
             <Link
               href="/checkout"
               onClick={closeBag}
               className="mt-3 block rounded-full bg-ink py-3.5 text-center font-semibold text-cream"
             >
-              Checkout
+              Checkout →
             </Link>
           </div>
         )}
