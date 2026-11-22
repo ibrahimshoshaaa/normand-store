@@ -2,7 +2,7 @@
 
 // Normand — admin client islands: order status selector, product editor,
 // category manager, and the dashboard chart tabs.
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   addCategoryAction,
@@ -19,25 +19,59 @@ import type { DailyPoint } from "@/lib/demo";
 export function OrderStatusSelect({ code, status }: { code: string; status: string }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timer.current) clearTimeout(timer.current);
+    };
+  }, []);
+
+  async function change(value: string) {
+    if (value === status) return;
+    setBusy(true);
+    setFailed(false);
+    try {
+      await updateOrderStatusAction(code, value);
+      router.refresh();
+      setSaved(true);
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => setSaved(false), 3000);
+    } catch {
+      setFailed(true);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
-    <select
-      value={status}
-      disabled={busy}
-      aria-label={`Status for order ${code}`}
-      onChange={async (e) => {
-        setBusy(true);
-        await updateOrderStatusAction(code, e.target.value);
-        router.refresh();
-        setBusy(false);
-      }}
-      className="rounded-full border border-black/15 bg-surface px-3 py-1.5 text-sm font-semibold outline-none"
-    >
-      {["PREPARING", "SHIPPED", "DELIVERED"].map((s) => (
-        <option key={s} value={s}>
-          {s}
-        </option>
-      ))}
-    </select>
+    <span className="inline-flex items-center gap-2">
+      <select
+        value={status}
+        disabled={busy}
+        aria-label={`Status for order ${code}`}
+        onChange={(e) => change(e.target.value)}
+        className="rounded-full border border-black/15 bg-surface px-3 py-1.5 text-sm font-semibold outline-none"
+      >
+        {["PREPARING", "SHIPPED", "DELIVERED"].map((s) => (
+          <option key={s} value={s}>
+            {s}
+          </option>
+        ))}
+      </select>
+      {saved && (
+        <span role="status" className="text-sm font-semibold text-green-700">
+          Saved ✓
+        </span>
+      )}
+      {failed && (
+        <span role="alert" className="text-sm font-semibold text-red-700">
+          Couldn’t save — try again
+        </span>
+      )}
+    </span>
   );
 }
 
@@ -72,6 +106,7 @@ export function DashboardCharts({
       </div>
       <div className="rounded-[24px] bg-surface p-6">
         <h3 className="font-display text-lg font-bold">Sales by category</h3>
+        <p className="text-sm text-ink-soft">Product sales · last 30 days</p>
         <div className="mt-4">
           <CategoryDonut data={byCategory} />
         </div>

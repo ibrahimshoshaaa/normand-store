@@ -277,12 +277,21 @@ export async function getOrdersByEmail(email: string): Promise<OrderView[]> {
 }
 
 // ---- admin stats --------------------------------------------------------------
+// One shared window + one shared measure for every widget on the dashboard:
+// the last 30 calendar days (today + the 29 days before it — exactly the
+// buckets dailySeries builds), and product sales (items only, excl. delivery).
+// The revenue KPI, the chart and the category donut all sum the same orders
+// the same way, so their totals agree. (Previously the KPI summed order
+// totals incl. delivery over a rolling 30×24h window, the chart dropped
+// orders older than 29 calendar days, and the donut summed items only —
+// three different numbers on one page.)
 export async function getAdminStats() {
   const [orders, products] = await Promise.all([listOrders(), listProducts()]);
-  const now = Date.now();
-  const thirtyDaysAgo = now - 30 * 24 * 60 * 60 * 1000;
-  const recent = orders.filter((o) => o.createdAt.getTime() >= thirtyDaysAgo);
-  const revenueCents = recent.reduce((s, o) => s + o.totalCents, 0);
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const windowStart = todayStart.getTime() - 29 * 24 * 60 * 60 * 1000;
+  const recent = orders.filter((o) => o.createdAt.getTime() >= windowStart);
+  const revenueCents = recent.reduce((s, o) => s + o.itemsCents, 0);
   const orderCount = recent.length;
   const customers = new Set(recent.map((o) => o.email)).size;
   const aovCents = orderCount ? Math.round(revenueCents / orderCount) : 0;

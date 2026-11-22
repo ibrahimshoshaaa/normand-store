@@ -72,7 +72,7 @@ export function CountUp({
   value,
   prefix = "",
   suffix = "",
-  duration = 1200,
+  duration = 900,
 }: {
   value: number;
   prefix?: string;
@@ -80,8 +80,14 @@ export function CountUp({
   duration?: number;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [display, setDisplay] = useState(0);
+  // Render the real value from the start (including server-side), so the
+  // page never reads "0" before JavaScript runs. The count-up only plays
+  // when the number scrolls into view later; numbers already in view on
+  // load stay put and settle immediately.
+  const [display, setDisplay] = useState(value);
+  const mountedAt = useRef(0);
   useEffect(() => {
+    mountedAt.current = performance.now();
     const el = ref.current;
     if (!el) return;
     let raf = 0;
@@ -89,7 +95,10 @@ export function CountUp({
       (entries) => {
         if (!entries[0].isIntersecting) return;
         obs.disconnect();
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        if (
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+          performance.now() - mountedAt.current < 500
+        ) {
           setDisplay(value);
           return;
         }

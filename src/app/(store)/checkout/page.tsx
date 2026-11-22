@@ -1,7 +1,7 @@
 "use client";
 
 // Normand — checkout ("Almost yours."): delivery address, delivery speed,
-// card (demo — no real payment is processed), order summary, place order.
+// card details (no payment is processed online), order summary, place order.
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -81,7 +81,7 @@ export default function CheckoutPage() {
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div>
                 <label htmlFor="name" className="text-sm font-semibold">Full name</label>
-                <input id="name" required value={name} onChange={(e) => setName(e.target.value)} placeholder="Demo Customer" className={inputCls} />
+                <input id="name" required value={name} onChange={(e) => setName(e.target.value)} placeholder="Your full name" className={inputCls} />
               </div>
               <div>
                 <label htmlFor="email" className="text-sm font-semibold">Email</label>
@@ -129,7 +129,7 @@ export default function CheckoutPage() {
           <section className="rounded-[24px] bg-surface p-6">
             <h2 className="font-display text-xl font-bold">Payment</h2>
             <p className="mt-1 text-sm text-ink-soft">
-              Demo checkout — no real payment is processed. Connect Stripe before selling for real.
+              No payment is taken online — your order is placed without payment.
             </p>
             <label htmlFor="card" className="mt-4 block text-sm font-semibold">Card number</label>
             <input

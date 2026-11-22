@@ -143,6 +143,20 @@ h3,
   -webkit-mask-image: linear-gradient(to right, black 88%, transparent 100%);
 }
 
+/* Admin tab-switch progress bar */
+@keyframes admin-nav-progress {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(260%);
+  }
+}
+.admin-nav-progress {
+  width: 38%;
+  animation: admin-nav-progress 0.9s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

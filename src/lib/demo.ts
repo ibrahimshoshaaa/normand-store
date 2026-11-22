@@ -1,6 +1,7 @@
 // Normand — deterministic demo-order generator.
-// Produces ~497 orders over the last 30 days totalling roughly $163k, matching
-// the feel of the original template's dashboard. The same generator feeds:
+// Produces ~497 orders over the last 30 days, roughly $158k in product sales
+// (items only, before delivery), matching the feel of the original template's
+// dashboard. The same generator feeds:
 //  - the Prisma seed script (real rows in Neon), and
 //  - the in-memory demo fallback when no DATABASE_URL is configured.
 // Deterministic (seeded PRNG) so the dashboard is stable across restarts.
@@ -134,7 +135,9 @@ export function dailySeries(orders: DemoOrder[], days = 30): DailyPoint[] {
     const dayOrders = orders.filter((o) => o.createdAt >= day && o.createdAt < next);
     points.push({
       label: day.toLocaleDateString("en-GB", { day: "numeric", month: "short" }),
-      revenue: dayOrders.reduce((s, o) => s + o.totalCents, 0) / 100,
+      // Product sales only (items, excl. delivery) — the same measure the
+      // revenue KPI and the category donut use, so the three totals agree.
+      revenue: dayOrders.reduce((s, o) => s + o.itemsCents, 0) / 100,
       orders: dayOrders.length,
     });
   }

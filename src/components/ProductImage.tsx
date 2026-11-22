@@ -34,6 +34,7 @@ export function ProductImage({
   className = "",
   label,
   imageUrl,
+  eager = false,
 }: {
   garment: string;
   bg: string;
@@ -41,6 +42,8 @@ export function ProductImage({
   className?: string;
   label?: string;
   imageUrl?: string | null;
+  /** Load eagerly for above-the-fold images (e.g. the home hero). */
+  eager?: boolean;
 }) {
   if (imageUrl) {
     return (
@@ -49,7 +52,7 @@ export function ProductImage({
         alt={label ?? "Product image"}
         className={`${className} object-cover`}
         style={{ background: bg }}
-        loading="lazy"
+        loading={eager ? "eager" : "lazy"}
       />
     );
   }

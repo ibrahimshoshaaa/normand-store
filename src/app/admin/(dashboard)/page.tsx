@@ -56,6 +56,10 @@ export default async function AdminOverview() {
           </div>
         ))}
       </div>
+      <p className="mt-3 text-xs text-ink-soft">
+        Product sales, excluding delivery · Last 30 days — the chart and the
+        category breakdown below use the same totals.
+      </p>
 
       <div className="mt-4">
         <DashboardCharts series={stats.series} byCategory={stats.byCategory} />
