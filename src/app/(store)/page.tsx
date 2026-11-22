@@ -59,7 +59,7 @@ export default async function HomePage() {
 
         <Reveal delay={120} className="relative overflow-hidden rounded-[24px]" >
           <div style={{ background: coat.tint }} className="relative h-full min-h-[320px]">
-            <ProductImage garment={coat.garment} bg={coat.tint} label={coat.name} className="h-full w-full object-cover" />
+            <ProductImage garment={coat.garment} imageUrl={coat.imageUrl} bg={coat.tint} label={coat.name} className="h-full w-full object-cover" />
             <span className="absolute left-4 top-4 rounded-full bg-leaf px-3 py-1 text-xs font-bold text-white">
               Bestseller
             </span>

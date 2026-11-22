@@ -33,6 +33,7 @@ export type ProductSeed = {
   sizes: string[];
   stock: number;
   garment: "tee" | "hoodie" | "coat" | "dress" | "crew" | "jeans" | "trousers";
+  imageUrl: string; // Cloudinary delivery URL (no folder prefix — Dynamic folders)
   tint: string;
   blurb: string;
   description: string;
@@ -58,6 +59,7 @@ export const PRODUCTS: ProductSeed[] = [
     sizes: SIZES,
     stock: 42,
     garment: "tee",
+    imageUrl: "https://res.cloudinary.com/dzbvceezc/image/upload/ro-heavy-tee.jpg",
     tint: "#f6ead0",
     blurb: "Heavyweight organic cotton, structured drape.",
     description:
@@ -79,6 +81,7 @@ export const PRODUCTS: ProductSeed[] = [
     sizes: SIZES,
     stock: 36,
     garment: "hoodie",
+    imageUrl: "https://res.cloudinary.com/dzbvceezc/image/upload/dune-oversized-hoodie.jpg",
     tint: "#dfe8d8",
     blurb: "Brushed fleece, dropped shoulders, deep hood.",
     description:
@@ -100,6 +103,7 @@ export const PRODUCTS: ProductSeed[] = [
     sizes: SIZES,
     stock: 20,
     garment: "coat",
+    imageUrl: "https://res.cloudinary.com/dzbvceezc/image/upload/havn-wool-coat.jpg",
     tint: "#f3ddd0",
     blurb: "Double-faced wool, clean lines, made to last.",
     description:
@@ -120,6 +124,7 @@ export const PRODUCTS: ProductSeed[] = [
     sizes: SIZES,
     stock: 28,
     garment: "dress",
+    imageUrl: "https://res.cloudinary.com/dzbvceezc/image/upload/linne-linen-dress.jpg",
     tint: "#f2dfe0",
     blurb: "Washed linen, easy fit, pockets included.",
     description:
@@ -139,6 +144,7 @@ export const PRODUCTS: ProductSeed[] = [
     sizes: SIZES,
     stock: 52,
     garment: "crew",
+    imageUrl: "https://res.cloudinary.com/dzbvceezc/image/upload/pil-crew-sweatshirt.jpg",
     tint: "#dde6ec",
     blurb: "Loopwheel fleece crew, ribbed trims.",
     description:
@@ -158,6 +164,7 @@ export const PRODUCTS: ProductSeed[] = [
     sizes: SIZES,
     stock: 44,
     garment: "jeans",
+    imageUrl: "https://res.cloudinary.com/dzbvceezc/image/upload/fjord-denim-jeans.jpg",
     tint: "#dde6ec",
     blurb: "Straight leg, rigid denim, breaks in beautifully.",
     description:
@@ -177,6 +184,7 @@ export const PRODUCTS: ProductSeed[] = [
     sizes: SIZES,
     stock: 30,
     garment: "trousers",
+    imageUrl: "https://res.cloudinary.com/dzbvceezc/image/upload/tailor-trouser.jpg",
     tint: "#f6ead0",
     blurb: "High-rise, tapered leg, pressed crease.",
     description:
@@ -196,6 +204,7 @@ export const PRODUCTS: ProductSeed[] = [
     sizes: SIZES,
     stock: 39,
     garment: "jeans",
+    imageUrl: "https://res.cloudinary.com/dzbvceezc/image/upload/vida-straight-jeans.jpg",
     tint: "#dfe8d8",
     blurb: "Everyday straight jeans, mid-rise, ankle length.",
     description:

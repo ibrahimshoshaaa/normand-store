@@ -45,6 +45,7 @@ async function main() {
         stock: p.stock,
         live: true,
         garment: p.garment,
+        imageUrl: p.imageUrl,
         tint: p.tint,
         categoryId: categoryIds.get(p.categorySlug)!,
       },

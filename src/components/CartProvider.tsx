@@ -20,6 +20,7 @@ export type BagItem = {
   size: string;
   quantity: number;
   garment: string;
+  imageUrl: string | null;
   tint: string;
 };
 

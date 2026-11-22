@@ -1,4 +1,4 @@
-// Normand — Prisma schema (Neon Postgres, no Firebase anywhere).
+// Normand — Prisma schema (Neon Postgres only).
 // DATABASE_URL is read from the environment (.env locally, Vercel env vars in production).
 
 generator client {
@@ -35,7 +35,8 @@ model Product {
   sizes        Json     @default("[\"XS\",\"S\",\"M\",\"L\",\"XL\"]")
   stock        Int      @default(0)
   live         Boolean  @default(true)
-  garment      String   @default("tee") // key for the local SVG product visual
+  garment      String   @default("tee") // key for the local SVG product visual (fallback when no photo)
+  imageUrl     String?  // Cloudinary delivery URL for the real product photo
   tint         String   @default("#f6ead0") // pastel card background
   categoryId   String
   category     Category @relation(fields: [categoryId], references: [id])
@@ -90,4 +91,12 @@ model OrderItem {
   size       String  @default("M")
 
   @@index([orderId])
+}
+
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
 }

@@ -103,8 +103,8 @@ export default function CheckoutPage() {
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {(
                 [
-                  ["Standard", "Free · 2–3 days", subtotalCents >= 15000 ? 0 : 0],
-                  ["Express", "Next day · +$25", 2500],
+                  ["Standard", "Free · 2–3 days", 0],
+                  ["Express", "Next day · +$25 · Free over $150", 2500],
                 ] as const
               ).map(([method, label, fee]) => (
                 <button
@@ -119,7 +119,7 @@ export default function CheckoutPage() {
                   <span className="font-display font-bold">{method}</span>
                   <span className="block text-sm text-ink-soft">{label}</span>
                   <span className="mt-1 block text-sm font-semibold">
-                    {method === "Standard" && subtotalCents >= 15000 ? "Free" : method === "Standard" ? "Free" : formatMoney(fee)}
+                    {subtotalCents >= 15000 || method === "Standard" ? "Free" : formatMoney(fee)}
                   </span>
                 </button>
               ))}
@@ -162,7 +162,7 @@ export default function CheckoutPage() {
           <ul className="mt-4 space-y-3">
             {items.map((it) => (
               <li key={`${it.slug}-${it.colour}-${it.size}`} className="flex items-center gap-3">
-                <ProductImage garment={it.garment} bg={it.tint} label={it.name} className="h-14 w-14 rounded-2xl" />
+                <ProductImage garment={it.garment} imageUrl={it.imageUrl} bg={it.tint} label={it.name} className="h-14 w-14 rounded-2xl" />
                 <span className="flex-1 text-sm">
                   <span className="block font-semibold">{it.name}</span>
                   <span className="text-ink-soft">

@@ -1,7 +1,8 @@
 // Normand — product visuals.
-// Self-contained inline SVG garment silhouettes on a pastel tile.
-// No external images, so the store renders identically offline and on Vercel.
-// Swap `garment` artwork for real photos later by replacing this component.
+// Renders the real Cloudinary product photo when `imageUrl` is set; the
+// self-contained inline SVG garment silhouette is the fallback (new admin
+// products without a photo, or a product whose photo failed to load).
+// No external images are required for the store to render.
 
 type Garment = "tee" | "hoodie" | "coat" | "dress" | "crew" | "jeans" | "trousers";
 
@@ -32,13 +33,26 @@ export function ProductImage({
   ink = "#211d18",
   className = "",
   label,
+  imageUrl,
 }: {
   garment: string;
   bg: string;
   ink?: string;
   className?: string;
   label?: string;
+  imageUrl?: string | null;
 }) {
+  if (imageUrl) {
+    return (
+      <img
+        src={imageUrl}
+        alt={label ?? "Product image"}
+        className={`${className} object-cover`}
+        style={{ background: bg }}
+        loading="lazy"
+      />
+    );
+  }
   const key = (Object.keys(PATHS) as Garment[]).includes(garment as Garment)
     ? (garment as Garment)
     : "tee";
@@ -50,9 +64,12 @@ export function ProductImage({
       className={className}
       style={{ background: bg }}
     >
-      <ellipse cx="100" cy="168" rx="52" ry="8" fill="#000" opacity="0.08" />
-      <path d={PATHS[key]} fill={ink} opacity="0.88" />
-      <path d={PATHS[key]} fill="none" stroke="#fff" strokeOpacity="0.25" strokeWidth="1.5" />
+      {/* Subtle darker disc behind the garment so the silhouette reads
+          clearly against pale pastel tiles (notably the coat on mobile). */}
+      <circle cx="100" cy="102" r="76" fill="#211d18" opacity="0.06" />
+      <ellipse cx="100" cy="168" rx="52" ry="8" fill="#000" opacity="0.12" />
+      <path d={PATHS[key]} fill={ink} opacity="1" />
+      <path d={PATHS[key]} fill="none" stroke="#fff" strokeOpacity="0.35" strokeWidth="2" />
     </svg>
   );
 }

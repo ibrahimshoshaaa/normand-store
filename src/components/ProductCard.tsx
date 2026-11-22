@@ -32,6 +32,7 @@ export function QuickAddButton({ product }: { product: ProductView }) {
           colour: product.colours[0]?.name ?? "",
           size: "M",
           garment: product.garment,
+          imageUrl: product.imageUrl,
           tint: product.tint,
         });
         openBag();
@@ -56,6 +57,7 @@ export function ProductCard({ product }: { product: ProductView }) {
       >
         <ProductImage
           garment={product.garment}
+          imageUrl={product.imageUrl}
           bg={product.tint}
           label={product.name}
           className="aspect-square w-full transition duration-500 group-hover:scale-[1.04]"

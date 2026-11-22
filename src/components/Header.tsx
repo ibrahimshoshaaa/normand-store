@@ -4,6 +4,7 @@
 // account link and the Bag pill. Mobile nav is a horizontal scroller with a
 // fade affordance so off-screen categories are visibly reachable.
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "./CartProvider";
 import { formatMoney } from "@/lib/format";
@@ -11,11 +12,14 @@ import type { ProductView } from "@/lib/store";
 import { ProductImage } from "./ProductImage";
 
 export function Header({ categories }: { categories: { name: string; slug: string }[] }) {
+  const router = useRouter();
   const { count, openBag } = useCart();
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<ProductView[]>([]);
+  const [searching, setSearching] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const requestId = useRef(0);
 
   useEffect(() => {
     if (searchOpen) inputRef.current?.focus();
@@ -24,18 +28,37 @@ export function Header({ categories }: { categories: { name: string; slug: strin
   useEffect(() => {
     if (!searchOpen || query.trim().length < 2) {
       setResults([]);
+      setSearching(false);
       return;
     }
+    const id = ++requestId.current;
     const t = setTimeout(async () => {
-      try {
-        const res = await fetch(`/api/products?q=${encodeURIComponent(query)}`);
-        if (res.ok) setResults(await res.json());
-      } catch {
-        setResults([]);
+      setSearching(true);
+      // One retry: a cold serverless function or a slow wake-up can fail
+      // the first request even though the search itself works.
+      let res: Response | null = null;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          res = await fetch(`/api/products?q=${encodeURIComponent(query)}`);
+          if (res.ok) break;
+        } catch {
+          res = null;
+        }
+        if (attempt === 0) await new Promise((r) => setTimeout(r, 400));
       }
+      if (requestId.current !== id) return; // a newer query superseded this one
+      setSearching(false);
+      setResults(res && res.ok ? await res.json() : []);
     }, 200);
     return () => clearTimeout(t);
   }, [query, searchOpen]);
+
+  function goToShopResults() {
+    const q = query.trim();
+    if (q.length < 1) return;
+    setSearchOpen(false);
+    router.push(`/shop?q=${encodeURIComponent(q)}`);
+  }
 
   return (
     <>
@@ -144,7 +167,10 @@ export function Header({ categories }: { categories: { name: string; slug: strin
                 ref={inputRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => e.key === "Escape" && setSearchOpen(false)}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") setSearchOpen(false);
+                  if (e.key === "Enter") goToShopResults();
+                }}
                 placeholder="Search tees, hoodies, dresses…"
                 className="w-full bg-transparent text-lg outline-none placeholder:text-ink-soft"
                 aria-label="Search products"
@@ -157,25 +183,38 @@ export function Header({ categories }: { categories: { name: string; slug: strin
                 Close
               </button>
             </div>
-            {results.length > 0 ? (
-              <ul className="max-h-80 divide-y divide-black/5 overflow-y-auto">
-                {results.map((p) => (
-                  <li key={p.slug}>
-                    <Link
-                      href={`/product/${p.slug}`}
-                      onClick={() => setSearchOpen(false)}
-                      className="flex items-center gap-3 py-3"
-                    >
-                      <ProductImage garment={p.garment} bg={p.tint} className="h-12 w-12 rounded-2xl" label={p.name} />
-                      <span className="flex-1">
-                        <span className="block font-display font-bold">{p.name}</span>
-                        <span className="text-sm text-ink-soft">{p.categoryName}</span>
-                      </span>
-                      <span className="font-display font-bold">{formatMoney(p.priceCents)}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            {searching ? (
+              <p className="py-6 text-center text-sm text-ink-soft" aria-live="polite">
+                Searching…
+              </p>
+            ) : results.length > 0 ? (
+              <>
+                <ul className="max-h-80 divide-y divide-black/5 overflow-y-auto">
+                  {results.map((p) => (
+                    <li key={p.slug}>
+                      <Link
+                        href={`/product/${p.slug}`}
+                        onClick={() => setSearchOpen(false)}
+                        className="flex items-center gap-3 py-3"
+                      >
+                        <ProductImage garment={p.garment} imageUrl={p.imageUrl} bg={p.tint} className="h-12 w-12 rounded-2xl" label={p.name} />
+                        <span className="flex-1">
+                          <span className="block font-display font-bold">{p.name}</span>
+                          <span className="text-sm text-ink-soft">{p.categoryName}</span>
+                        </span>
+                        <span className="font-display font-bold">{formatMoney(p.priceCents)}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  type="button"
+                  onClick={goToShopResults}
+                  className="mt-2 w-full rounded-full bg-cream py-2.5 text-sm font-semibold"
+                >
+                  See all results for “{query.trim()}” →
+                </button>
+              </>
             ) : (
               query.trim().length >= 2 && (
                 <p className="py-6 text-center text-sm text-ink-soft">

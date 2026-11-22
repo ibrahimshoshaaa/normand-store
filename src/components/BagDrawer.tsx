@@ -74,6 +74,7 @@ export function BagDrawer() {
                 <li key={`${item.slug}-${item.colour}-${item.size}`} className="flex gap-3">
                   <ProductImage
                     garment={item.garment}
+                    imageUrl={item.imageUrl}
                     bg={item.tint}
                     label={item.name}
                     className="h-20 w-20 shrink-0 rounded-2xl"

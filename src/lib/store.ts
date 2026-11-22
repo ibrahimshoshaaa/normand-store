@@ -24,6 +24,7 @@ export type ProductView = {
   stock: number;
   live: boolean;
   garment: string;
+  imageUrl: string | null;
   tint: string;
   blurb: string;
   description: string;
@@ -82,6 +83,7 @@ function seedToView(p: ProductSeed): ProductView {
     stock: p.stock,
     live: true,
     garment: p.garment,
+    imageUrl: p.imageUrl,
     tint: p.tint,
     blurb: p.blurb,
     description: p.description,
@@ -138,14 +140,35 @@ function demoCategories(): CategoryView[] {
 }
 
 // ---- reads ------------------------------------------------------------------
+
+// Run a Prisma read, retrying once after a short delay. Neon free-tier
+// databases suspend after inactivity and wake slowly; a first query can
+// fail while the database is still waking up. Without the retry the code
+// would silently fall back to freshly generated demo data, so dashboard
+// totals changed on every load. Returns null only if both attempts fail.
+async function withDbRetry<T>(fn: () => Promise<T>): Promise<T | null> {
+  try {
+    return await fn();
+  } catch {
+    await new Promise((resolve) => setTimeout(resolve, 900));
+    try {
+      return await fn();
+    } catch {
+      return null;
+    }
+  }
+}
+
 export async function listProducts(): Promise<ProductView[]> {
   const prisma = getPrisma();
   if (prisma) {
-    try {
-      const rows = await prisma.product.findMany({
+    const rows = await withDbRetry(() =>
+      prisma.product.findMany({
         include: { category: true },
         orderBy: { createdAt: "asc" },
-      });
+      }),
+    );
+    if (rows) {
       return rows.map((r) => ({
         id: r.id,
         slug: r.slug,
@@ -162,14 +185,14 @@ export async function listProducts(): Promise<ProductView[]> {
         stock: r.stock,
         live: r.live,
         garment: r.garment,
+        imageUrl: r.imageUrl,
         tint: r.tint,
         blurb: r.blurb,
         description: r.description,
       }));
-    } catch {
-      // DB unreachable — fall through to demo data.
     }
   }
+  // DB unreachable (or not configured) — fall through to demo data.
   return demoProducts();
 }
 
@@ -185,11 +208,13 @@ export async function getProduct(slug: string): Promise<ProductView | null> {
 export async function listCategories(): Promise<CategoryView[]> {
   const prisma = getPrisma();
   if (prisma) {
-    try {
-      const rows = await prisma.category.findMany({
+    const rows = await withDbRetry(() =>
+      prisma.category.findMany({
         include: { products: true },
         orderBy: { sortOrder: "asc" },
-      });
+      }),
+    );
+    if (rows) {
       return rows.map((c) => ({
         id: c.id,
         name: c.name,
@@ -199,8 +224,6 @@ export async function listCategories(): Promise<CategoryView[]> {
         productCount: c.products.length,
         liveCount: c.products.filter((p) => p.live).length,
       }));
-    } catch {
-      // fall through
     }
   }
   return demoCategories();
@@ -209,11 +232,13 @@ export async function listCategories(): Promise<CategoryView[]> {
 export async function listOrders(): Promise<OrderView[]> {
   const prisma = getPrisma();
   if (prisma) {
-    try {
-      const rows = await prisma.order.findMany({
-        include: { items: true },
+    const rows = await withDbRetry(() =>
+      prisma.order.findMany({
+        include: { items: { include: { product: true } } },
         orderBy: { createdAt: "desc" },
-      });
+      }),
+    );
+    if (rows) {
       return rows.map((o) => ({
         id: o.id,
         code: o.code,
@@ -228,7 +253,7 @@ export async function listOrders(): Promise<OrderView[]> {
         status: o.status,
         createdAt: o.createdAt,
         items: o.items.map((it) => ({
-          slug: "",
+          slug: it.product?.slug ?? "",
           name: it.name,
           priceCents: it.priceCents,
           quantity: it.quantity,
@@ -236,8 +261,6 @@ export async function listOrders(): Promise<OrderView[]> {
           size: it.size,
         })),
       }));
-    } catch {
-      // fall through
     }
   }
   return demoOrders();
@@ -490,6 +513,7 @@ export async function saveProduct(
         stock: row.stock,
         live: row.live,
         garment: row.garment,
+        imageUrl: row.imageUrl,
         tint: row.tint,
         blurb: row.blurb,
         description: row.description,
@@ -534,6 +558,7 @@ export async function saveProduct(
     stock: input.stock,
     live: input.live,
     garment: "tee",
+    imageUrl: null,
     tint: "#f6ead0",
     blurb: input.blurb,
     description: input.description,
@@ -602,4 +627,46 @@ export async function addCategory(name: string): Promise<void> {
       liveCount: 0,
     });
   }
+}
+
+// ---- newsletter subscribers -------------------------------------------------
+export type SubscriberView = { id: string; email: string; createdAt: Date };
+
+let memorySubscribers: SubscriberView[] = [];
+
+export async function subscribeNewsletter(email: string): Promise<void> {
+  const clean = email.trim().toLowerCase();
+  if (!clean.includes("@")) throw new Error("Enter a valid email address.");
+  const prisma = getPrisma();
+  if (prisma) {
+    try {
+      await prisma.subscriber.upsert({
+        where: { email: clean },
+        update: {},
+        create: { email: clean },
+      });
+      return;
+    } catch {
+      // DB unreachable — keep the signup in memory so the visitor still
+      // gets their confirmation instead of an error page.
+    }
+  }
+  if (!memorySubscribers.some((s) => s.email === clean)) {
+    memorySubscribers.push({ id: `sub-${Date.now()}`, email: clean, createdAt: new Date() });
+  }
+}
+
+export async function listSubscribers(): Promise<SubscriberView[]> {
+  const prisma = getPrisma();
+  if (prisma) {
+    const rows = await withDbRetry(() =>
+      prisma.subscriber.findMany({ orderBy: { createdAt: "desc" } }),
+    );
+    if (rows) {
+      return rows.map((r) => ({ id: r.id, email: r.email, createdAt: r.createdAt }));
+    }
+  }
+  return [...memorySubscribers].sort(
+    (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+  );
 }

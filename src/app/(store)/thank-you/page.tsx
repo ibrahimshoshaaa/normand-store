@@ -49,6 +49,20 @@ export default async function ThankYouPage({
             </li>
           ))}
         </ul>
+        <dl className="mx-auto mt-4 max-w-sm space-y-1 border-t border-black/10 pt-4 text-left text-sm">
+          <div className="flex justify-between">
+            <dt>Subtotal</dt>
+            <dd>{formatMoney(order.itemsCents)}</dd>
+          </div>
+          <div className="flex justify-between">
+            <dt>Delivery ({order.deliveryMethod})</dt>
+            <dd>{order.deliveryCents === 0 ? "Free" : formatMoney(order.deliveryCents)}</dd>
+          </div>
+          <div className="flex justify-between font-display text-lg font-bold">
+            <dt>Total</dt>
+            <dd>{formatMoney(order.totalCents)}</dd>
+          </div>
+        </dl>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link href={`/track?code=${order.code}`} className="rounded-full bg-ink px-6 py-3 font-semibold text-cream">
             Track your order

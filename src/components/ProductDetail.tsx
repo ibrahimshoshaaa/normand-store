@@ -23,6 +23,7 @@ export function ProductDetail({ product }: { product: ProductView }) {
       <div className="relative overflow-hidden rounded-[24px]" style={{ background: product.tint }}>
         <ProductImage
           garment={product.garment}
+          imageUrl={product.imageUrl}
           bg={product.tint}
           label={product.name}
           className="aspect-square w-full"
@@ -111,6 +112,7 @@ export function ProductDetail({ product }: { product: ProductView }) {
                 colour,
                 size,
                 garment: product.garment,
+                imageUrl: product.imageUrl,
                 tint: product.tint,
               }, qty);
               setAdded(true);

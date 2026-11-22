@@ -3,7 +3,7 @@
 A minimalist clothing store with a full admin dashboard, built as a standalone
 Next.js app you can own, deploy, and extend. A clean-room rebuild of the
 original bento store template — same calm cream design, same pages and
-flows — rebranded as **Normand** and wired to **Neon Postgres** (no Firebase).
+flows — rebranded as **Normand** and wired to **Neon Postgres**.
 
 ## Stack
 
@@ -31,17 +31,28 @@ flows — rebranded as **Normand** and wired to **Neon Postgres** (no Firebase).
 - **Thank-you page** with order code (e.g. `NM-2401`) + **order tracking**
   (Preparing → Shipped → Delivered)
 - **Account** — demo sign-in by email, lists your orders
-- **Admin dashboard** (`/admin`) — Overview KPIs (revenue, orders, AOV, customers),
-  30-day revenue/orders chart, sales-by-category donut, live orders, top products,
-  plus Orders (status selector), Products (editor: edit fields, live/draft switch,
-  low-stock filter, add, two-step delete) and Categories (rename in place)
+- **Admin dashboard** (`/admin`) — password-gated with `ADMIN_PASSWORD`
+  (see below). Overview KPIs (revenue, orders, AOV, customers), 30-day
+  revenue/orders chart, sales-by-category donut, live orders, top products,
+  plus Orders (status selector + per-order detail page), Products (editor: edit
+  fields, live/draft switch, low-stock filter, add, two-step delete),
+  Categories (rename in place) and Subscribers (newsletter signups).
 
 ## Database
 
 Neon project **Normand** (`calm-pond-67213265`), region **AWS Europe Central 1
 (Frankfurt)**, database **`normand`** (Postgres 18, production branch). An older empty database on the same branch exists but is unused.
 
-Tables (Prisma): `Category`, `Product`, `Customer`, `Order`, `OrderItem`.
+Tables (Prisma): `Category`, `Product`, `Customer`, `Order`, `OrderItem`, `Subscriber`.
+
+## Admin access
+
+`/admin` is protected by a password. Set `ADMIN_PASSWORD` in `.env` locally
+(and as a Vercel env var in production) to a long random value, then sign in at
+`/admin/login` — the session cookie is httpOnly, HMAC-signed and lasts 7 days.
+If `ADMIN_PASSWORD` is not set, the dashboard stays open and shows a warning
+banner instead. After pulling a version that adds a table (e.g. `Subscriber`),
+run `npm run db:push` once against Neon so the new table exists.
 
 ## Run locally
 
@@ -86,7 +97,8 @@ orders and admin edits persist.
 
 - **Payments are not included.** Checkout is a demo flow. Connect Stripe (or
   another provider) in `src/app/(store)/checkout/page.tsx` before taking real money.
-- **Auth is demo-grade.** Account sign-in is email-only and the admin area is
-  open. Add real auth (e.g. NextAuth) and protect `/admin` before launch.
+- **Auth is demo-grade.** Account sign-in is email-only. The admin area is
+  password-gated (`ADMIN_PASSWORD`, see above) — set a strong password before
+  launch.
 - Demo orders are generated deterministically, so the dashboard shows the same
   ~$163k / 497 orders on every fresh seed.
