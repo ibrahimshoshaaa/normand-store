@@ -70,8 +70,24 @@ export default async function HomePage() {
             <span className="absolute left-4 top-4 rounded-full bg-leaf px-3 py-1 text-xs font-bold text-white">
               Bestseller
             </span>
-            <span className="spin-slow absolute right-4 top-4 flex h-20 w-20 items-center justify-center rounded-full bg-surface/90 text-center text-[9px] font-bold uppercase leading-tight tracking-widest">
-              Heavy cotton • Washed linen •
+            {/* Spinning material badge — like the demo: the text runs on a
+                circular path and only the ring spins (14s); the leaf in the
+                centre stays still. Text = this tile's product materials. */}
+            <span className="absolute right-4 top-4 grid h-[84px] w-[84px] shrink-0 place-items-center rounded-full bg-surface/90 backdrop-blur">
+              <svg viewBox="0 0 100 100" className="spin-slow absolute inset-0 size-full" aria-hidden="true">
+                <defs>
+                  <path id="badge-circle" d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0" />
+                </defs>
+                <text className="fill-ink font-mono text-[10px] uppercase">
+                  <textPath href="#badge-circle" textLength="224" lengthAdjust="spacing">
+                    Pure wool · Double-faced ·
+                  </textPath>
+                </text>
+              </svg>
+              <svg viewBox="0 0 24 24" className="size-5 text-ink" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+              </svg>
             </span>
             <div className="absolute inset-x-4 bottom-4 flex flex-wrap items-end justify-between gap-2">
               <div>

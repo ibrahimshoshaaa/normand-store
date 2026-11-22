@@ -89,7 +89,7 @@ h3,
   }
 }
 .spin-slow {
-  animation: spin-slow 22s linear infinite;
+  animation: spin-slow 14s linear infinite;
 }
 
 /* Toast slide-up — only the vertical part: the element is already centred
