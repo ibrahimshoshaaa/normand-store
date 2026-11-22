@@ -1,23 +1,11 @@
-// Normand — footer, like the demo: a photo banner above a dark panel
-// with a giant wordmark at the bottom.
+// Normand — footer, like the demo: a dark panel with a giant wordmark
+// at the bottom.
 import Link from "next/link";
-
-// Bestseller coat studio photo (Cloudinary, stable public URL).
-const BANNER_IMAGE =
-  "https://res.cloudinary.com/dzbvceezc/image/upload/havn-wool-coat.jpg";
 
 export function Footer({ categories }: { categories: { name: string; slug: string }[] }) {
   return (
     <footer className="mt-20">
-      <div className="mx-auto w-[min(1200px,calc(100%-1.5rem))] overflow-hidden rounded-[24px]">
-        <img
-          src={BANNER_IMAGE}
-          alt="The Normand wool coat"
-          loading="lazy"
-          className="h-48 w-full object-cover md:h-64"
-        />
-      </div>
-      <div className="mx-auto mt-4 w-[min(1200px,calc(100%-1.5rem))] rounded-[24px] bg-ink text-cream">
+      <div className="mx-auto w-[min(1200px,calc(100%-1.5rem))] rounded-[24px] bg-ink text-cream">
         <div className="px-6 py-12 sm:px-8 md:p-10">
           <p className="font-display text-3xl font-bold leading-tight md:text-4xl">
             Calm clothing, made to be lived with.
